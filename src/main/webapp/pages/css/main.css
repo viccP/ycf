@@ -1,0 +1,67 @@
+.login-container {
+	margin: 108px auto 0;
+	width: 375px;
+}
+
+.user-info {
+	color: white;
+	display: inline-block;
+	line-height: 15px;
+	max-width: 100px;
+	overflow: hidden;
+	position: relative;
+	text-align: left;
+	text-overflow: ellipsis;
+	top: 14px;
+	vertical-align: top;
+	white-space: nowrap;
+}
+
+.sidebar {
+    float: left;
+    padding-left: 0;
+    padding-right: 0;
+    position: static;
+    width: 146px;
+}
+
+.sidebar.menu-min .nav-list > li > .submenu {
+    display: none;
+    left: 42px;
+    margin-top: 40px;
+    padding-bottom: 2px;
+    position: absolute;
+    top: -1px;
+    width: 106px;
+    z-index: 1026;
+}
+
+.sidebar.menu-min .nav-list > li > a > .menu-text {
+    border: 1px solid;
+    display: none;
+    height: 41px;
+    left: 42px;
+    line-height: 38px;
+    padding-left: 12px;
+    position: absolute;
+    text-align: left;
+    top: -1px;
+    width: 106px;
+    z-index: 1025;
+}
+
+.profile-info-name {
+    background-color: transparent;
+    border-top: 1px dotted #d5e4f1;
+    color: #667e99;
+    display: table-cell;
+    font-weight: normal;
+    padding: 6px 10px 6px 4px;
+    text-align: left;
+    vertical-align: middle;
+    width: 137px;
+}
+
+.clear-boder {
+    border-left: 0px solid #e3e3e3;
+}
