@@ -107,7 +107,8 @@ function initSaveBtn(){
 			type : "POST",
 			dataType : "json",
 			contentType : false,
-			processData : false
+			processData : false,
+			loading:true
 		});
 	});
 }
