@@ -87,18 +87,17 @@ public class IndexAction {
 			mkWord(apply, dstDir);
 
 			// 3.压缩并发送
-			String[] cmds= {"/bin/sh","-c","cd "+CST.UPLOAD_DIR+" && "+"zip -r "+attachFile+" upload_tmp_" + uniID};
+			String[] cmds= {"/bin/sh","-c","cd "+dstDir+" && "+"zip -r "+attachFile+" ./*"};
 			CmdUtils.exec(cmds);
 			emailService.setFromUser("客户");
 			emailService.setToUser("友车金融");
 			emailService.setSubject("申请表");
-			emailService.setFile(new File(CST.UPLOAD_DIR+"/"+attachFile));
+			emailService.setFile(new File(dstDir+"/"+attachFile));
 			emailService.setAttchName(attachFile);
 			emailService.send();
 
 			// 4.删除文件
-//			CmdUtils.exec("rm -rf " + dstDir);
-//			CmdUtils.exec("rm -rf " + attachFile);
+			CmdUtils.exec("rm -rf " + dstDir);
 
 			// 5.返回前台
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, "提交成功");
