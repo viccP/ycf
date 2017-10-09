@@ -87,8 +87,7 @@ public class IndexAction {
 			mkWord(apply, dstDir);
 
 			// 3.压缩并发送
-			CmdUtils.exec("cd " + CST.UPLOAD_DIR);
-			CmdUtils.exec("zip -r " + attachFile + " upload_tmp_" + uniID);
+			CmdUtils.exec("bash -c cd " + CST.UPLOAD_DIR+" && "+"zip -r " + attachFile + " upload_tmp_" + uniID);
 			emailService.setFromUser("客户");
 			emailService.setToUser("友车金融");
 			emailService.setSubject("申请表");
