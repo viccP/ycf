@@ -2,22 +2,22 @@ package com.ycf.utils;
 
 /**
  * 
- * ClassName: CmdUtils <br/> 
- * Function: 执行主机命令. <br/> 
- * date: 2017年10月9日 上午9:56:24 <br/> 
+ * ClassName: CmdUtils <br/>
+ * Function: 执行主机命令. <br/>
+ * date: 2017年10月9日 上午9:56:24 <br/>
  * 
- * @author liboqiang 
- * @version  
+ * @author liboqiang
+ * @version
  * @since JDK 1.6
  */
 public class CmdUtils {
 
 	/**
 	 * 
-	 * exec:(执行命令). <br/> 
+	 * exec:(执行命令). <br/>
 	 * 
 	 * @author liboqiang
-	 * @param cmd 
+	 * @param cmd
 	 * @since JDK 1.6
 	 */
 	public static void exec(String cmd) {
@@ -32,6 +32,30 @@ public class CmdUtils {
 			process.waitFor();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * exec:(执行多条命令). <br/> 
+	 * 
+	 * @author liboqiang
+	 * @param cmds 
+	 * @since JDK 1.6
+	 */
+	public static void exec(String[] cmds) {
+		try {
+			Process process = Runtime.getRuntime().exec(cmds);
+			StreamGobbler errorGobbler = new StreamGobbler(process.getErrorStream(), "ERROR");
+			// kick off stderr
+			errorGobbler.start();
+			StreamGobbler outGobbler = new StreamGobbler(process.getInputStream(), "STDOUT");
+			// kick off stdout
+			outGobbler.start();
+			process.waitFor();
+		} catch (Exception e) {
+			e.printStackTrace();
+
 		}
 	}
 }

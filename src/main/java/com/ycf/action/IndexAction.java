@@ -78,7 +78,7 @@ public class IndexAction {
 			// 操作文件夹
 			String uniID = UUID.randomUUID().toString();
 			String dstDir = CST.UPLOAD_DIR + "/upload_tmp_" + uniID;
-			String attachFile = "申请文件" + uniID + ".zip";
+			String attachFile="申请文件.zip";
 
 			// 1.制作上传文件夹
 			mkUploadDir(apply, dstDir);
@@ -87,16 +87,17 @@ public class IndexAction {
 			mkWord(apply, dstDir);
 
 			// 3.压缩并发送
-			CmdUtils.exec("bash -c cd " + CST.UPLOAD_DIR+" && "+"zip -r " + attachFile + " upload_tmp_" + uniID);
+			String[] cmds= {"/bin/sh","-c","cd "+CST.UPLOAD_DIR+" && "+"zip -r "+attachFile+" upload_tmp_" + uniID};
+			CmdUtils.exec(cmds);
 			emailService.setFromUser("客户");
 			emailService.setToUser("友车金融");
 			emailService.setSubject("申请表");
-			emailService.setFile(new File(attachFile));
-			emailService.setAttchName("请查收附件");
+			emailService.setFile(new File(CST.UPLOAD_DIR+"/"+attachFile));
+			emailService.setAttchName(attachFile);
 			emailService.send();
 
 			// 4.删除文件
-			CmdUtils.exec("rm -rf " + dstDir);
+//			CmdUtils.exec("rm -rf " + dstDir);
 //			CmdUtils.exec("rm -rf " + attachFile);
 
 			// 5.返回前台
