@@ -78,7 +78,7 @@ public class IndexAction {
 			// 操作文件夹
 			String uniID = UUID.randomUUID().toString();
 			String dstDir = CST.UPLOAD_DIR + "/upload_tmp_" + uniID;
-			String attachFile = CST.UPLOAD_DIR + "/申请文件" + uniID + ".zip";
+			String attachFile = "申请文件" + uniID + ".zip";
 
 			// 1.制作上传文件夹
 			mkUploadDir(apply, dstDir);
@@ -87,7 +87,8 @@ public class IndexAction {
 			mkWord(apply, dstDir);
 
 			// 3.压缩并发送
-			CmdUtils.exec("zip -r " + attachFile + " " + dstDir);
+			CmdUtils.exec("cd " + CST.UPLOAD_DIR);
+			CmdUtils.exec("zip -r " + attachFile + " upload_tmp_" + uniID);
 			emailService.setFromUser("客户");
 			emailService.setToUser("友车金融");
 			emailService.setSubject("申请表");
@@ -96,7 +97,8 @@ public class IndexAction {
 			emailService.send();
 
 			// 4.删除文件
-			CmdUtils.exec("rm -rf " + attachFile);
+			CmdUtils.exec("rm -rf " + dstDir);
+//			CmdUtils.exec("rm -rf " + attachFile);
 
 			// 5.返回前台
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, "提交成功");
