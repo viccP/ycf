@@ -7,6 +7,7 @@ package com.ycf.dao.tables.daos;
 import com.ycf.dao.tables.TmUser;
 import com.ycf.dao.tables.records.TmUserRecord;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -104,5 +105,19 @@ public class TmUserDao extends DAOImpl<TmUserRecord, com.ycf.dao.tables.pojos.Tm
      */
     public List<com.ycf.dao.tables.pojos.TmUser> fetchByMemo(String... values) {
         return fetch(TmUser.TM_USER.MEMO, values);
+    }
+
+    /**
+     * Fetch records that have <code>upd_time IN (values)</code>
+     */
+    public List<com.ycf.dao.tables.pojos.TmUser> fetchByUpdTime(Timestamp... values) {
+        return fetch(TmUser.TM_USER.UPD_TIME, values);
+    }
+
+    /**
+     * Fetch records that have <code>pwd_status IN (values)</code>
+     */
+    public List<com.ycf.dao.tables.pojos.TmUser> fetchByPwdStatus(Integer... values) {
+        return fetch(TmUser.TM_USER.PWD_STATUS, values);
     }
 }

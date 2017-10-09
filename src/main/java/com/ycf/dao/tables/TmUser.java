@@ -8,6 +8,7 @@ import com.ycf.dao.Keys;
 import com.ycf.dao.System;
 import com.ycf.dao.tables.records.TmUserRecord;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmUser extends TableImpl<TmUserRecord> {
 
-    private static final long serialVersionUID = 914508325;
+    private static final long serialVersionUID = -1491269832;
 
     /**
      * The reference instance of <code>system.tm_user</code>
@@ -83,6 +84,16 @@ public class TmUser extends TableImpl<TmUserRecord> {
      * The column <code>system.tm_user.memo</code>. 备注
      */
     public final TableField<TmUserRecord, String> MEMO = createField("memo", org.jooq.impl.SQLDataType.VARCHAR.length(500), this, "备注");
+
+    /**
+     * The column <code>system.tm_user.upd_time</code>. 更新时间
+     */
+    public final TableField<TmUserRecord, Timestamp> UPD_TIME = createField("upd_time", org.jooq.impl.SQLDataType.TIMESTAMP, this, "更新时间");
+
+    /**
+     * The column <code>system.tm_user.pwd_status</code>. 密码状态&gt;1:已经修改 0:初始密码
+     */
+    public final TableField<TmUserRecord, Integer> PWD_STATUS = createField("pwd_status", org.jooq.impl.SQLDataType.INTEGER, this, "密码状态>1:已经修改 0:初始密码");
 
     /**
      * Create a <code>system.tm_user</code> table reference

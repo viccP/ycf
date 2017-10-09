@@ -102,7 +102,7 @@ function initSaveBtn(){
 		
 		//提交后台
 		$.ajax({
-			url : $.cxt + "/index/apply",
+			url : $.cxt + "/apply/doApply",
 			data : json,
 			type : "POST",
 			dataType : "json",

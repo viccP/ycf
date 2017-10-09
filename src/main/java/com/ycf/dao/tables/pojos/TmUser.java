@@ -5,6 +5,7 @@ package com.ycf.dao.tables.pojos;
 
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
@@ -22,15 +23,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmUser implements Serializable {
 
-    private static final long serialVersionUID = -1270056381;
+    private static final long serialVersionUID = 1476334242;
 
-    private String  userId;
-    private String  loginId;
-    private String  password;
-    private String  userName;
-    private Integer sex;
-    private String  phoneNo;
-    private String  memo;
+    private String    userId;
+    private String    loginId;
+    private String    password;
+    private String    userName;
+    private Integer   sex;
+    private String    phoneNo;
+    private String    memo;
+    private Timestamp updTime;
+    private Integer   pwdStatus;
 
     public TmUser() {}
 
@@ -42,16 +45,20 @@ public class TmUser implements Serializable {
         this.sex = value.sex;
         this.phoneNo = value.phoneNo;
         this.memo = value.memo;
+        this.updTime = value.updTime;
+        this.pwdStatus = value.pwdStatus;
     }
 
     public TmUser(
-        String  userId,
-        String  loginId,
-        String  password,
-        String  userName,
-        Integer sex,
-        String  phoneNo,
-        String  memo
+        String    userId,
+        String    loginId,
+        String    password,
+        String    userName,
+        Integer   sex,
+        String    phoneNo,
+        String    memo,
+        Timestamp updTime,
+        Integer   pwdStatus
     ) {
         this.userId = userId;
         this.loginId = loginId;
@@ -60,6 +67,8 @@ public class TmUser implements Serializable {
         this.sex = sex;
         this.phoneNo = phoneNo;
         this.memo = memo;
+        this.updTime = updTime;
+        this.pwdStatus = pwdStatus;
     }
 
     public String getUserId() {
@@ -118,6 +127,22 @@ public class TmUser implements Serializable {
         this.memo = memo;
     }
 
+    public Timestamp getUpdTime() {
+        return this.updTime;
+    }
+
+    public void setUpdTime(Timestamp updTime) {
+        this.updTime = updTime;
+    }
+
+    public Integer getPwdStatus() {
+        return this.pwdStatus;
+    }
+
+    public void setPwdStatus(Integer pwdStatus) {
+        this.pwdStatus = pwdStatus;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("TmUser (");
@@ -129,6 +154,8 @@ public class TmUser implements Serializable {
         sb.append(", ").append(sex);
         sb.append(", ").append(phoneNo);
         sb.append(", ").append(memo);
+        sb.append(", ").append(updTime);
+        sb.append(", ").append(pwdStatus);
 
         sb.append(")");
         return sb.toString();

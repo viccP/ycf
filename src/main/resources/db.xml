@@ -21,7 +21,7 @@
 		</database>
 		<target>
 			<packageName>com.ycf.dao</packageName>
-			<directory>/pgm/workspaces/autoContract/system/src/main/java</directory>
+			<directory>/Users/lbqrcy/git/ycf/src/main/java</directory>
 		</target>
 	</generator>
 </configuration>
