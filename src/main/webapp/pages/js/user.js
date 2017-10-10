@@ -154,18 +154,9 @@ function renderOperation(cellvalue, options, cell) {
  * @returns
  */
 function doSearch(){
-	
-	//1.构建Json
-	var json={};
-	json.tmUser=$('#searchUserForm').serializeObject();
-	json.page=$("#grid-table").getGridParam("page");
-	json.rows=$("#grid-table").getGridParam("rowNum");
-	
-	//2.执行检索
 	$("#grid-table").jqGrid('setGridParam', {
 		url : $.cxt + "/user/list",
 		datatype : 'json',
-		postData :  JSON.stringify(json),
-		serializeGridData:null,
+		postData : {"tmUser" : $('#searchUserForm').serializeObject()},
 	}).trigger('reloadGrid');
 }

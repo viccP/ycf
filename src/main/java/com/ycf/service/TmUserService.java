@@ -89,14 +89,15 @@ public class TmUserService {
 
 			// 获取总数
 			int total = dsl.fetchCount(TM_USER);
+			int totalPage=(int)Math.ceil(((double)total/(double)rows));
 
 			// 构造分页信息
 			Page<TmUser> pageBean = new Page<TmUser>();
 			pageBean.setRows(list);
 			pageBean.setPage(userForm.getPage());
 			pageBean.setPageSize(userForm.getRows());
-			pageBean.setRecords(list.size());
-			pageBean.setTotal(total);
+			pageBean.setRecords(total);
+			pageBean.setTotal(totalPage);
 
 			return pageBean;
 		} catch (Exception e) {
