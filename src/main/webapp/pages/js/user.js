@@ -12,8 +12,10 @@ $(function() {
 	// 初始化列表
 	initGrid();
 	
-
-
+	// 初始化搜索按钮
+	$('#searchUser').on('click', function() {
+		doSearch();
+	});
 });
 
 /**
@@ -24,6 +26,15 @@ $(function() {
 function initGrid() {
 	$('#grid-table').jqGrid({
 		url : $.cxt + "/user/list",
+		ajaxGridOptions:{contentType: "application/json"},
+		serializeGridData: function (postData)
+         {
+             if (postData.searchField === undefined) postData.searchField = null;
+             if (postData.searchString === undefined) postData.searchString = null;
+             if (postData.searchOper === undefined) postData.searchOper = null;
+             return JSON.stringify(postData);
+         },
+        datatype: "json",
 		datatype : "json",
 		mtype : "POST",
 		height : 370,
@@ -138,3 +149,23 @@ function renderOperation(cellvalue, options, cell) {
 	return container.html();
 }
 
+/**
+ * 检索
+ * @returns
+ */
+function doSearch(){
+	
+	//1.构建Json
+	var json={};
+	json.tmUser=$('#searchUserForm').serializeObject();
+	json.page=$("#grid-table").getGridParam("page");
+	json.rows=$("#grid-table").getGridParam("rowNum");
+	
+	//2.执行检索
+	$("#grid-table").jqGrid('setGridParam', {
+		url : $.cxt + "/user/list",
+		datatype : 'json',
+		postData :  JSON.stringify(json),
+		serializeGridData:null,
+	}).trigger('reloadGrid');
+}

@@ -2,6 +2,7 @@ package com.ycf.action;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -62,7 +63,7 @@ public class UserAction {
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String list(UserForm userForm) {
+	public String list(@RequestBody UserForm userForm) {
 		try {
 			//1.查询数据
 			Page<TmUser> pageBean = tmUserService.list(userForm);
