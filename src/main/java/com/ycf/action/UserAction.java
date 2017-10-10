@@ -1,15 +1,15 @@
 package com.ycf.action;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ycf.bean.UserForm;
 import com.ycf.cst.CST;
 import com.ycf.dao.tables.pojos.TmUser;
+import com.ycf.page.Page;
 import com.ycf.service.TmUserService;
 import com.ycf.utils.Ajax;
 
@@ -26,18 +26,17 @@ import com.ycf.utils.Ajax;
 @Controller
 @RequestMapping(value = "/user")
 public class UserAction {
-	
+
 	@Autowired
 	private TmUserService tmUserService;
 
-
 	/**
 	 * 
-	 * add:(新增用户). <br/> 
+	 * add:(新增用户). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param tmUser
-	 * @return 
+	 * @return
 	 * @since JDK 1.6
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
@@ -51,22 +50,23 @@ public class UserAction {
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * 
-	 * list:(查询用户列表). <br/> 
+	 * list:(查询用户列表). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param tmUser
-	 * @return 
+	 * @return
 	 * @since JDK 1.6
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String list(TmUser tmUser) {
+	public String list(UserForm userForm) {
 		try {
-			List<TmUser> list = tmUserService.list(tmUser);
-			return Ajax.responseString(CST.RES_SUCCESS, list);
+			//1.查询数据
+			Page<TmUser> pageBean = tmUserService.list(userForm);
+			return Ajax.responseString(CST.RES_SUCCESS, pageBean, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());

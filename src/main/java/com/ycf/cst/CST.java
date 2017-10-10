@@ -7,10 +7,27 @@ public class CST {
 
 	/**默认用户ID**/
 	public static final String USER_ID_DEFAULT = "0";
+	
+	/**自动消息提示标识**/
 	public static final String RES_AUTO_DIALOG = "-1";
+	
+	/**成功标识**/
 	public static final String RES_SUCCESS = "0";
 	
-	public static String UPLOAD_DIR="";
+	/**用户性别(1:男)**/
+	public static final String USER_SEX_MALE="1";
+	
+	/**用户性别(0:女)**/
+	public static final String USER_SEX_FEMALE="0";
+	
+	/**用户密码状态(0:初始密码)**/
+	public static final String PWD_STATUS_INIT="0";
+	
+	/**用户密码状态(1:已经修改)**/
+	public static final String PWD_STATUS_ALTERED="1";
+	
+	
+	
 	@SuppressWarnings("serial")
 	public static final Map<String,String> PIC_MAPPER=new HashMap<String,String>(){{  
 	      put("getCreditPic","征信");
@@ -26,4 +43,6 @@ public class CST {
 	      put("getIdPic","申请人及配偶身份证");   
 	}};  
 
+	/**上传文件夹地址**/
+	public static String UPLOAD_DIR="";
 }

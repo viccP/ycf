@@ -1,5 +1,8 @@
 package com.ycf.action;
 
+import static com.ycf.dao.tables.TmUser.TM_USER;
+
+import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
-import com.ycf.cst.CST;
-import com.ycf.dao.tables.daos.TmUserDao;
+import com.ycf.dao.tables.pojos.TmUser;
 
 /**
  * 
@@ -25,7 +27,7 @@ import com.ycf.dao.tables.daos.TmUserDao;
 public class IndexAction {
 
 	@Autowired
-	private TmUserDao tmUserDao;
+	private DefaultDSLContext dsl;
 
 	/**
 	 * 
@@ -35,11 +37,11 @@ public class IndexAction {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@RequestMapping(value = "/login", method = RequestMethod.GET, produces = "text/html;charset=utf-8")
 	@ResponseBody
 	public String login() {
 
-		return JSON.toJSONString(tmUserDao.fetchByUserId(CST.USER_ID_DEFAULT));
+		return JSON.toJSONString(dsl.selectFrom(TM_USER).where("1=1").fetchInto(TmUser.class));
 	}
 
 }
