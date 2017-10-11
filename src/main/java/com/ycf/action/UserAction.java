@@ -40,12 +40,15 @@ public class UserAction {
 	 * @return
 	 * @since JDK 1.6
 	 */
-	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String add(TmUser tmUser) {
+	public String edit(@RequestBody TmUser tmUser) {
 		try {
-			tmUserService.add(tmUser);
-			return Ajax.responseString(CST.RES_AUTO_DIALOG, "新增成功");
+			if (tmUser.getSex() == null) {
+				return Ajax.responseString(CST.RES_LOGIC_ERROR_2);
+			}
+			String status = tmUserService.edit(tmUser);
+			return Ajax.responseString(status, "新增成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
@@ -65,7 +68,7 @@ public class UserAction {
 	@ResponseBody
 	public String list(@RequestBody UserForm userForm) {
 		try {
-			//1.查询数据
+			// 1.查询数据
 			Page<TmUser> pageBean = tmUserService.list(userForm);
 			return Ajax.responseString(CST.RES_SUCCESS, pageBean, true);
 		} catch (Exception e) {

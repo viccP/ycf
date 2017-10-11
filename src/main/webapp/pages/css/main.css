@@ -74,3 +74,12 @@
 .grid-btn:hover {
 	background: none !important;
 }
+
+.btn-user-tag{
+	min-width:100px;
+}
+
+#sex_chosen .chosen-single {
+	border-radius: 0px;
+	margin-top: 0px;
+}

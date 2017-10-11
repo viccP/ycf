@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/pages/css/main.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/select2.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/chosen.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/bootstrapvalidator/css/bootstrapValidator.css">
 
 <!--[if lte IE 9]>
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/ace-part2.css" class="ace-main-stylesheet" />
@@ -172,6 +173,7 @@
 	<script src="<%=request.getContextPath()%>/resource/ace/js/jqGrid/i18n/grid.locale-cn.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/select2.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/chosen.jquery.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/bootstrapvalidator/js/bootstrapValidator.js"></script>
 	<script src="<%=request.getContextPath()%>/pages/js/main.js"></script>
 </body>
 </html>

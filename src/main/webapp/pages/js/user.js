@@ -3,11 +3,18 @@
  */
 $(function() {
 
-	//初始化用户下拉菜单
-	$('.chosen-select').chosen({
+	// 初始化用户下拉菜单
+	$('.fix-select').chosen({
 		disable_search : true,
 		width : "10%"
 	});
+	
+	
+	$('#sex').chosen({
+		disable_search : true,
+		width : "100%"
+	});
+	
 	
 	// 初始化列表
 	initGrid();
@@ -16,6 +23,65 @@ $(function() {
 	$('#searchUser').on('click', function() {
 		doSearch();
 	});
+	
+	// 打开新增窗口
+	$("#addUser").on("click",function(){
+		$('#createUserModal').modal("show");
+		
+		//清除下拉框状态
+		$("#sex").val("");
+		$("#sex").trigger("chosen:updated");
+		
+		// 清除form的验证状态
+		$('#createUserForm').bootstrapValidator('resetForm', 'true');
+		document.getElementById("createUserForm").reset();
+	});
+	
+	
+	// 提交修改
+	$('#createUserForm').bootstrapValidator({
+		fields : {
+			loginId : {
+				validators : {
+					notEmpty : {message : '请输入登录名称'},
+					regexp : {regexp : /^[a-zA-Z0-9_]+$/,message : '登录名称不合法或者登录名称已经存在'}
+				}
+			},
+			userName : {validators : {
+					notEmpty : {message : '请输入用户名称'}
+				}
+			},
+			phoneNo : {validators : {
+					regexp : {regexp : /^[0-9_]{11}$/,message : '手机号码格式不正确'}
+				}
+			},
+			sex : {
+				validators : {
+					regexp : {regexp : /^.*$/,message : '请选择性别'}
+				}
+			}
+		},
+		submitHandler : function(validator, form, submitButton) {
+			$.ajax({
+				url : $.cxt + '/user/edit',
+				data : JSON.stringify($('#createUserForm').serializeObject()),
+				type : "POST",
+				contentType: "application/json",
+				dataType:"json",
+				loading:true,
+				success : function(data) {
+					if (data.code == "0") {
+						// 关闭窗口
+						$('#createUserModal').modal('hide');
+						// 刷新页面
+						$("#grid-table").jqGrid().trigger('reloadGrid');
+					} else if (data.code == "1") {
+						validator.updateStatus("loginId",'INVALID', "regexp");
+					} else if (data.code == "2") {
+						validator.updateStatus("sex",'INVALID', "regexp");
+					} 
+			}});}
+		});
 });
 
 /**
@@ -34,7 +100,6 @@ function initGrid() {
              if (postData.searchOper === undefined) postData.searchOper = null;
              return JSON.stringify(postData);
          },
-        datatype: "json",
 		datatype : "json",
 		mtype : "POST",
 		height : 370,
@@ -69,14 +134,15 @@ function initGrid() {
 
 /**
  * 调整列表
+ * 
  * @returns
  */
 function arrageGrid(table) {
 	
-	//1.标题居中
+	// 1.标题居中
 	$('.ui-jqgrid-sortable').css("text-align", "center");
 	
-	//2.更换分页图标
+	// 2.更换分页图标
 	var replacement = {
 		'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
 		'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
@@ -91,7 +157,7 @@ function arrageGrid(table) {
 			icon.attr('class', 'ui-icon ' + replacement[$class]);
 	})
 	
-	//3.激活提示
+	// 3.激活提示
 	$('.navtable .ui-pg-button').tooltip({
 		container : 'body'
 	});
@@ -103,6 +169,7 @@ function arrageGrid(table) {
 
 /**
  * 转义用户性别
+ * 
  * @param cellvalue
  * @returns
  */
@@ -112,6 +179,7 @@ function encodeSex(cellvalue) {
 
 /**
  * 转义密码状态
+ * 
  * @param cellvalue
  * @returns
  */
@@ -121,8 +189,8 @@ function encodePwdStatus(cellvalue){
 
 
 /**
-* 渲染操作列
-*/
+ * 渲染操作列
+ */
 function renderOperation(cellvalue, options, cell) {
 	var container = $("<div><div>")
 				.append(
@@ -151,6 +219,7 @@ function renderOperation(cellvalue, options, cell) {
 
 /**
  * 检索
+ * 
  * @returns
  */
 function doSearch(){

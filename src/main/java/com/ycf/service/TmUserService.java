@@ -2,7 +2,7 @@ package com.ycf.service;
 
 import static com.ycf.dao.tables.TmUser.TM_USER;
 
-import java.util.List;
+import java.sql.Timestamp;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.SelectConditionStep;
@@ -13,10 +13,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ycf.bean.UserForm;
+import com.ycf.cst.CST;
 import com.ycf.dao.tables.daos.TmUserDao;
 import com.ycf.dao.tables.pojos.TmUser;
 import com.ycf.dao.tables.records.TmUserRecord;
 import com.ycf.page.Page;
+import com.ycf.page.PageHelper;
+import com.ycf.utils.IdGenerator;
+import com.ycf.utils.MD5;
 
 @Component
 public class TmUserService {
@@ -27,17 +31,41 @@ public class TmUserService {
 	@Autowired
 	private DefaultDSLContext dsl;
 
+	@Autowired
+	private PageHelper<TmUser> pageHelper;
+
 	/**
 	 * 
-	 * add:(添加用户). <br/>
+	 * edit:(编辑用户). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param tmUser
+	 * @return
 	 * @since JDK 1.6
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void add(TmUser tmUser) {
-		tmUserDao.insert(tmUser);
+	public String edit(TmUser tmUser) {
+		try {
+			//1.验证重复性
+			if (tmUserDao.fetchByLoginId(tmUser.getLoginId()).size() != 0) {
+				return CST.RES_LOGIC_ERROR_1;
+			}
+			
+			//2.判断新增还是更新
+			if (StringUtils.isEmpty(tmUser.getUserId())) {
+				tmUser.setUpdTime(new Timestamp(System.currentTimeMillis()));
+				tmUser.setPassword(MD5.getHash(CST.PWD_DEFAULT));
+				tmUser.setPwdStatus(CST.PWD_STATUS_INIT);
+				tmUser.setUserId(IdGenerator.genId());
+				tmUserDao.insert(tmUser);
+			} else {
+				tmUser.setUpdTime(new Timestamp(System.currentTimeMillis()));
+				tmUserDao.update(tmUser);
+			}
+			return CST.RES_SUCCESS;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -51,10 +79,7 @@ public class TmUserService {
 	 */
 	public Page<TmUser> list(UserForm userForm) {
 		try {
-			int rows = userForm.getRows();
-			int page = userForm.getPage();
 			TmUser tmUser = userForm.getTmUser();
-
 			SelectConditionStep<TmUserRecord> sql = dsl.selectFrom(TM_USER).where("1=1");
 
 			if (tmUser != null) {
@@ -79,27 +104,11 @@ public class TmUserService {
 				}
 			}
 
-			// 添加分页节
-			if (page > 0) {
-				sql.limit((page - 1) * rows, page * rows);
-			}
+			// 添加排序
+			sql.orderBy(TM_USER.UPD_TIME.asc());
 
-			// 获取查询结果
-			List<TmUser> list = sql.fetchInto(TmUser.class);
+			return pageHelper.get(userForm.getPage(), userForm.getRows(), sql, TmUser.class);
 
-			// 获取总数
-			int total = dsl.fetchCount(TM_USER);
-			int totalPage=(int)Math.ceil(((double)total/(double)rows));
-
-			// 构造分页信息
-			Page<TmUser> pageBean = new Page<TmUser>();
-			pageBean.setRows(list);
-			pageBean.setPage(userForm.getPage());
-			pageBean.setPageSize(userForm.getRows());
-			pageBean.setRecords(total);
-			pageBean.setTotal(totalPage);
-
-			return pageBean;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Page<TmUser>();
