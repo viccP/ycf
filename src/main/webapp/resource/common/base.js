@@ -134,7 +134,7 @@ $(function(){
 		                        callback: function (result) {
 		                          if(result){
 		                        	  var topObj=$.getTopObj(window);
-		                        	  topObj.href =$.cxt+'/pages/jsp/login/login.jsp';
+		                        	  topObj.href =$.cxt+'/pages/login.jsp';
 		                          }
 		                        }
 		                    });

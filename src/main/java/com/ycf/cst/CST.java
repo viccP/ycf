@@ -10,6 +10,9 @@ public class CST {
 	
 	/**自动消息提示标识(-1)**/
 	public static final String RES_AUTO_DIALOG = "-1";
+
+	/**会话超时标识(-2)**/
+	public static final String RES_SESSION_TIME_OUT = "-2";
 	
 	/**成功标识(0)**/
 	public static final String RES_SUCCESS = "0";
@@ -49,6 +52,7 @@ public class CST {
 	      put("getBankPic","收入证明与银行流水");   
 	      put("getIdPic","申请人及配偶身份证");   
 	}};
+
 
 
 

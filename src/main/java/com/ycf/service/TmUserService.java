@@ -46,13 +46,12 @@ public class TmUserService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String edit(TmUser tmUser) {
 		try {
-			//1.验证重复性
-			if (tmUserDao.fetchByLoginId(tmUser.getLoginId()).size() != 0) {
-				return CST.RES_LOGIC_ERROR_1;
-			}
-			
-			//2.判断新增还是更新
+			// 判断新增还是更新
 			if (StringUtils.isEmpty(tmUser.getUserId())) {
+				//验证重复性
+				if (tmUserDao.fetchByLoginId(tmUser.getLoginId()).size() != 0) {
+					return CST.RES_LOGIC_ERROR_1;
+				}
 				tmUser.setUpdTime(new Timestamp(System.currentTimeMillis()));
 				tmUser.setPassword(MD5.getHash(CST.PWD_DEFAULT));
 				tmUser.setPwdStatus(CST.PWD_STATUS_INIT);
@@ -62,7 +61,7 @@ public class TmUserService {
 				tmUser.setUpdTime(new Timestamp(System.currentTimeMillis()));
 				tmUserDao.update(tmUser);
 			}
-			return CST.RES_SUCCESS;
+			return CST.RES_AUTO_DIALOG;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -112,6 +111,23 @@ public class TmUserService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Page<TmUser>();
+		}
+	}
+
+	/**
+	 * 
+	 * delete:(删除用户). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param userId
+	 * @since JDK 1.6
+	 */
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(String userId) {
+		try {
+			tmUserDao.deleteById(userId);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 }

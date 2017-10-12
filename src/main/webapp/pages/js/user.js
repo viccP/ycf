@@ -26,21 +26,8 @@ $(function() {
 	
 	// 打开新增窗口
 	$("#addUser").on("click",function(){
-		$("#userModal").modal({
-			backdrop : 'static',
-			keyboard : false,
-			show : true
-		});
-		
-		//清除下拉框状态
-		$("#sex").val("");
-		$("#sex").trigger("chosen:updated");
-		
-		// 清除form的验证状态
-		$('#createUserForm').bootstrapValidator('resetForm', 'true');
-		document.getElementById("createUserForm").reset();
+		openModal(true);
 	});
-	
 	
 	// 提交修改
 	$('#createUserForm').bootstrapValidator({
@@ -74,16 +61,16 @@ $(function() {
 				dataType:"json",
 				loading:true,
 				success : function(data) {
-					if (data.code == "0") {
-						// 关闭窗口
-						$('#createUserModal').modal('hide');
-						// 刷新页面
-						$("#grid-table").jqGrid().trigger('reloadGrid');
-					} else if (data.code == "1") {
+					if (data.code == "1") {
 						validator.updateStatus("loginId",'INVALID', "regexp");
 					} else if (data.code == "2") {
 						validator.updateStatus("sex",'INVALID', "regexp");
-					} 
+					} else{
+						// 关闭窗口
+						$('#userModal').modal('hide');
+						// 刷新页面
+						$("#grid-table").jqGrid().trigger('reloadGrid');
+					}
 			}});}
 		});
 });
@@ -232,4 +219,133 @@ function doSearch(){
 		datatype : 'json',
 		postData : {"tmUser" : $('#searchUserForm').serializeObject()},
 	}).trigger('reloadGrid');
+}
+
+/**
+ * 删除用户
+ * @param userId
+ * @returns
+ */
+function delUser(userId){
+	//提示框打开
+    bootbox.confirm({
+        title: "消息提示",
+        message: "确定删除该用户?",
+        size:"small",
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> 取消'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> 确定'
+            }
+        },
+        callback: function (result) {
+        		if(result){
+        			$.ajax({
+        				url : $.cxt + '/user/delete',
+        				data : {"userId" : userId},
+        				type : "POST",
+        				dataType:"json",
+        				success : function(data) {
+        					// 刷新页面
+        					$("#grid-table").jqGrid().trigger('reloadGrid');
+        				}
+        			});
+        		}
+        }
+    });
+}
+
+/**
+ * 编辑用户
+ * @param userId
+ * @returns
+ */
+function editUser(userId){
+	$.ajax({
+		url : $.cxt + '/user/get',
+		data : {"userId" : userId},
+		type : "POST",
+		dataType:"json",
+		success : function(json) {
+			// 刷新页面
+			if(json.code=="0"){
+				openModal(false);
+				$.each(json.data,function(key,value){
+					$("#createUserForm input[name="+key+"]").val(value);
+					if(key=="sex"){
+						$("#sex").val(value);
+						$("#sex").trigger('chosen:updated');
+					}
+					
+					if(key=="memo"){
+						$("#createUserForm textarea[name="+key+"]").val(value);
+					}
+				});
+			}
+		}
+	});
+}
+
+/**
+ * 初始化密码
+ * @param userId
+ * @returns
+ */
+function initPwd(userId){
+	//提示框打开
+    bootbox.confirm({
+        title: "消息提示",
+        message: "确定重置该用户密码么?",
+        size:"small",
+        buttons: {
+            cancel: {
+                label: '<i class="fa fa-times"></i> 取消'
+            },
+            confirm: {
+                label: '<i class="fa fa-check"></i> 确定'
+            }
+        },
+        callback: function (result) {
+        		if(result){
+        			$.ajax({
+        				url : $.cxt + '/user/initPwd',
+        				data : {"userId" : userId},
+        				type : "POST",
+        				dataType:"json",
+        				success : function(data) {
+        					// 刷新页面
+        					$("#grid-table").jqGrid().trigger('reloadGrid');
+        				}
+        			});
+        		}
+        }
+    });
+}
+
+
+
+
+/**
+ * 打开用户模态框
+ * @param flag
+ * @returns
+ */
+function openModal(flag){
+	$("#userModal").modal({
+		backdrop : 'static',
+		keyboard : false,
+		show : true
+	});
+	//清除下拉框状态
+	$("#sex").val("");
+	$("#sex").trigger("chosen:updated");
+	
+	// 清除form的验证状态
+	$('#createUserForm').bootstrapValidator('resetForm', 'true');
+	document.getElementById("createUserForm").reset();
+	if(!flag){
+		$("#userModal .modal-title").empty().append($("<i></i>").addClass("ace-icon fa fa-pencil-square-o")).append("编辑用户");
+	}
 }

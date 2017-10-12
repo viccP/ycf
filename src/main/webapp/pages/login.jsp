@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/font-awesome.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/ace-fonts.css" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/ace/css/ace.css" />
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/bootstrapvalidator/css/bootstrapValidator.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/pages/css/main.css" />
 
 <!--[if lte IE 9]>
@@ -40,10 +41,9 @@
 						<div class="center">
 							<h1>
 								<i class="ace-icon fa fa-leaf green"></i>
-								<span class="red">Ace</span>
-								<span class="white" id="id-text2">Application</span>
+								<span class="red">友车</span>
+								<span class="white" id="id-text2">OA</span>
 							</h1>
-							<h4 class="blue" id="id-company-text">&copy; Company Name</h4>
 						</div>
 
 						<div class="space-6"></div>
@@ -54,36 +54,32 @@
 									<div class="widget-main">
 										<h4 class="header blue lighter bigger">
 											<i class="ace-icon fa fa-coffee green"></i>
-											Please Enter Your Information
+											请填写登录信息
 										</h4>
 
 										<div class="space-6"></div>
 
-										<form>
-											<fieldset>
-												<label class="block clearfix">
-													<span class="block input-icon input-icon-right">
-														<input type="text" class="form-control" placeholder="Username" />
-														<i class="ace-icon fa fa-user"></i>
-													</span>
-												</label>
+										<form id="loginForm" autocomplete="off">
+											<label class="block clearfix form-group">
+												<span class="block input-icon input-icon-right">
+													<input type="text" class="form-control" placeholder="请输入用户名..." name="loginId" />
+													<i class="ace-icon fa fa-user"></i>
+												</span>
+											</label>
+											<label class="block clearfix form-group">
+												<span class="block input-icon input-icon-right">
+													<input type="password" class="form-control" placeholder="请输入密码..." name="password" />
+													<i class="ace-icon fa fa-lock"></i>
+												</span>
+											</label>
+											<div class="space"></div>
 
-												<label class="block clearfix">
-													<span class="block input-icon input-icon-right">
-														<input type="password" class="form-control" placeholder="Password" />
-														<i class="ace-icon fa fa-lock"></i>
-													</span>
-												</label>
-
-												<div class="space"></div>
-
-												<div class="clearfix">
-													<button type="button" class="width-35 pull-right btn btn-sm btn-primary">
-														<i class="ace-icon fa fa-key"></i>
-														<span class="bigger-110">Login</span>
-													</button>
-												</div>
-											</fieldset>
+											<div class="clearfix">
+												<button type="submit" class="width-35 pull-right btn btn-sm btn-primary" id="submitBtn">
+													<i class="ace-icon fa fa-key"></i>
+													<span class="bigger-110">登录</span>
+												</button>
+											</div>
 										</form>
 									</div>
 								</div>
@@ -97,7 +93,7 @@
 
 	<!--[if !IE]> -->
 	<script type="text/javascript">
-		window.jQuery || document.write("<script src='<%=request.getContextPath()%>/resource/ace/js/jquery.js'>"+"<"+"/script>");
+		window.jQuery || document.write("<script src='<%=request.getContextPath()%>/resource/ace/js/jquery.js'>" + "<"+"/script>");
 	</script>
 	<!-- <![endif]-->
 
@@ -106,5 +102,33 @@
  		window.jQuery || document.write("<script src='<%=request.getContextPath()%>/resource/ace/js/jquery1x.js'>"+"<"+"/script>");
 		</script>
 	<![endif]-->
+
+	<script src="<%=request.getContextPath()%>/resource/ace/js/bootstrap.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.scroller.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.colorpicker.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.fileinput.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.typeahead.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.wysiwyg.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.spinner.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.treeview.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.wizard.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/elements.aside.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.ajax-content.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.touch-drag.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.sidebar.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.sidebar-scroll-1.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.submenu-hover.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.widget-box.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings-rtl.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.settings-skin.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.widget-on-reload.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/ace/ace.searchbox-autocomplete.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/ace/js/spin.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/common/base.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/common/md5.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/bootstrapvalidator/js/bootstrapValidator.js"></script>
+	<script src="<%=request.getContextPath()%>/pages/js/login.js"></script>
 </body>
 </html>

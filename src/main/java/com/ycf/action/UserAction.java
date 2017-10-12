@@ -1,5 +1,7 @@
 package com.ycf.action;
 
+import java.sql.Timestamp;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,10 +11,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ycf.bean.UserForm;
 import com.ycf.cst.CST;
+import com.ycf.dao.tables.daos.TmUserDao;
 import com.ycf.dao.tables.pojos.TmUser;
 import com.ycf.page.Page;
 import com.ycf.service.TmUserService;
 import com.ycf.utils.Ajax;
+import com.ycf.utils.MD5;
 
 /**
  * 
@@ -31,6 +35,9 @@ public class UserAction {
 	@Autowired
 	private TmUserService tmUserService;
 
+	@Autowired
+	private TmUserDao tmUserDao;
+
 	/**
 	 * 
 	 * add:(新增用户). <br/>
@@ -48,7 +55,7 @@ public class UserAction {
 				return Ajax.responseString(CST.RES_LOGIC_ERROR_2);
 			}
 			String status = tmUserService.edit(tmUser);
-			return Ajax.responseString(status, "新增成功");
+			return Ajax.responseString(status, "操作成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
@@ -71,6 +78,67 @@ public class UserAction {
 			// 1.查询数据
 			Page<TmUser> pageBean = tmUserService.list(userForm);
 			return Ajax.responseString(CST.RES_SUCCESS, pageBean, true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 * delete:(删除用户). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param userId
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String delete(String userId) {
+		try {
+			// 1.查询数据
+			tmUserService.delete(userId);
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, "删除成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 * get:(获取用户). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param userId
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/get", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String get(String userId) {
+		try {
+			// 1.查询数据
+			TmUser tmUser = tmUserDao.fetchOneByUserId(userId);
+			return Ajax.responseString(CST.RES_SUCCESS, tmUser);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/initPwd", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String initPwd(String userId) {
+		try {
+			// 1.查询数据
+			TmUser tmUser = tmUserDao.fetchOneByUserId(userId);
+			tmUser.setPassword(MD5.getHash(CST.PWD_DEFAULT));
+			tmUser.setPwdStatus(CST.PWD_STATUS_INIT);
+			tmUser.setUpdTime(new Timestamp(System.currentTimeMillis()));
+			tmUserDao.update(tmUser);
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, "初始化密码成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());

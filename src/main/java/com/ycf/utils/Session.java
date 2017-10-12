@@ -18,7 +18,7 @@ public class Session {
 	 * @Description: 获取session
 	 * @return
 	 */
-	protected static HttpSession getSession() {
+	public static HttpSession getSession() {
 		try {
 			ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 			if (attr.getRequest().getSession() == null) {
