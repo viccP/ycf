@@ -34,8 +34,8 @@
 	</div>
 </div>
 
-<!-- 新建用户模态框 -->
-<div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- 用户模态框 -->
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog create-user-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -43,7 +43,7 @@
 					<i class="confirm-close fa fa-times"></i>
 				</button>
 				<h4 class="modal-title">
-					<i class="ace-icon fa fa-users white"></i>
+					<i class="ace-icon fa fa-users"></i>
 					新建用户
 				</h4>
 			</div>

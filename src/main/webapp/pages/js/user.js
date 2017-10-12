@@ -26,7 +26,11 @@ $(function() {
 	
 	// 打开新增窗口
 	$("#addUser").on("click",function(){
-		$('#createUserModal').modal("show");
+		$("#userModal").modal({
+			backdrop : 'static',
+			keyboard : false,
+			show : true
+		});
 		
 		//清除下拉框状态
 		$("#sex").val("");
