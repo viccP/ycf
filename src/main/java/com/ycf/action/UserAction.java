@@ -17,6 +17,7 @@ import com.ycf.page.Page;
 import com.ycf.service.TmUserService;
 import com.ycf.utils.Ajax;
 import com.ycf.utils.MD5;
+import com.ycf.utils.Session;
 
 /**
  * 
@@ -75,6 +76,11 @@ public class UserAction {
 	@ResponseBody
 	public String list(@RequestBody UserForm userForm) {
 		try {
+			// 0.身份认证
+			if(!Session.isSuperAdmin()) {
+				return Ajax.responseString(CST.RES_AUTO_DIALOG,"抱歉您没有权限");
+			}
+			
 			// 1.查询数据
 			Page<TmUser> pageBean = tmUserService.list(userForm);
 			return Ajax.responseString(CST.RES_SUCCESS, pageBean, true);
