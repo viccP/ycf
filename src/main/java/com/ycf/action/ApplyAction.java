@@ -25,32 +25,32 @@ import com.ycf.cst.CST;
 import com.ycf.service.EmailService;
 import com.ycf.utils.Ajax;
 import com.ycf.utils.CmdUtils;
+import com.ycf.utils.Session;
 
 /**
  * 
- * ClassName: ApplyAction <br/> 
- * Function: 申请控制器. <br/> 
- * date: 2017年10月9日 下午3:20:07 <br/> 
+ * ClassName: ApplyAction <br/>
+ * Function: 申请控制器. <br/>
+ * date: 2017年10月9日 下午3:20:07 <br/>
  * 
- * @author liboqiang 
- * @version  
+ * @author liboqiang
+ * @version
  * @since JDK 1.6
  */
 @Controller
 @RequestMapping(value = "/apply")
 public class ApplyAction {
-	
+
 	@Autowired
 	private EmailService emailService;
-	
 
 	/**
 	 * 
-	 * apply:(提交申请). <br/> 
+	 * apply:(提交申请). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param apply
-	 * @return 
+	 * @return
 	 * @since JDK 1.6
 	 */
 	@RequestMapping(value = "/doApply", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
@@ -59,9 +59,10 @@ public class ApplyAction {
 		try {
 
 			// 操作文件夹
+			String userName = Session.getUser().getUserName();
 			String uniID = UUID.randomUUID().toString();
 			String dstDir = CST.UPLOAD_DIR + "/upload_tmp_" + uniID;
-			String attachFile = "申请文件.zip";
+			String attachFile = userName + "(申请文件).zip";
 
 			// 1.制作上传文件夹
 			mkUploadDir(apply, dstDir);
@@ -72,7 +73,7 @@ public class ApplyAction {
 			// 3.压缩并发送
 			String[] cmds = { "/bin/sh", "-c", "cd " + dstDir + " && " + "zip -r " + attachFile + " ./*" };
 			CmdUtils.exec(cmds);
-			emailService.setFromUser("客户");
+			emailService.setFromUser(userName);
 			emailService.setToUser("友车金融");
 			emailService.setSubject("申请表");
 			emailService.setFile(new File(dstDir + "/" + attachFile));
@@ -106,7 +107,7 @@ public class ApplyAction {
 		String desFileName = dstDir + "/des.doc";
 		HWPFDocument document = new HWPFDocument(new FileInputStream(new File(fileName)));
 		Range range = (Range) document.getRange();
-		Class<?> clazz =apply.getClass();
+		Class<?> clazz = apply.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			String fieldName = field.getName();

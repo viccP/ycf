@@ -44,7 +44,7 @@ public class Session {
 	 */
 	public static boolean isSuperAdmin() {
 		try {
-			TmUser tmUser = (TmUser) getSession().getAttribute("tmUser");
+			TmUser tmUser = getUser();
 			if (CST.USER_ID_DEFAULT.equals(tmUser.getUserId())) {
 				return true;
 			} else {
@@ -53,6 +53,24 @@ public class Session {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * getUser:(获取用户). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	public static TmUser getUser() {
+		try {
+			TmUser tmUser = (TmUser) getSession().getAttribute("tmUser");
+			return tmUser;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new TmUser();
 		}
 	}
 
