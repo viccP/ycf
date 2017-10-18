@@ -60,6 +60,28 @@ public class IndexAction {
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
 		}
 	}
+	
+
+	/**
+	 * 
+	 * logout:(登出). <br/> 
+	 * 
+	 * @author liboqiang
+	 * @param session
+	 * @return 
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String logout(HttpSession session) {
+		try {
+			session.invalidate();
+			return Ajax.responseString(CST.RES_SUCCESS);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
 
 	/**
 	 * 检查session
@@ -72,7 +94,7 @@ public class IndexAction {
 	@ResponseBody
 	public String checkSession(HttpSession session) {
 		try {
-			if (session.getAttribute("userInfo") == null) {
+			if (session.getAttribute("tmUser") == null) {
 				return Ajax.responseString(CST.RES_SESSION_TIME_OUT, "用户已经过期，请重新登陆");
 			}
 			return Ajax.responseString(CST.RES_SUCCESS);

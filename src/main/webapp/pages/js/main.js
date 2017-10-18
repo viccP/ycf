@@ -17,6 +17,38 @@ $(function() {
 
 	//初始加载
 	initFirstPage();
+	
+	//初始化登出按钮
+	$("#logout").on("click",function(){
+		//提示框打开
+	    bootbox.confirm({
+	        title: "消息提示",
+	        message: "确定退出么?",
+	        size:"small",
+	        buttons: {
+	            cancel: {
+	                label: '<i class="fa fa-times"></i> 取消'
+	            },
+	            confirm: {
+	                label: '<i class="fa fa-check"></i> 确定'
+	            }
+	        },
+	        callback: function (result) {
+	        		if(result){
+	        			$.ajax({
+	        				url : $.cxt + '/index/logout',
+	        				type : "POST",
+	        				dataType:"json",
+	        				success : function(json) {
+	        					if (json.code == '0') {
+	        						location.href = $.cxt+"/pages/login.jsp";
+	        					}
+	        				}
+	        			});
+	        		}
+	        }
+	    });
+	});
 
 });
 

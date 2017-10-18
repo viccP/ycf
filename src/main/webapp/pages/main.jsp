@@ -50,7 +50,7 @@
 						<span class="user-info"> 你好，管理员 </span>
 					</li>
 					<li>
-						<a href="#">
+						<a href="#" id="logout">
 							<i class="ace-icon fa fa-power-off"></i>
 						</a>
 					</li>
