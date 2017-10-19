@@ -62,7 +62,7 @@ public class ApplyAction {
 			String userName = Session.getUser().getUserName();
 			String uniID = UUID.randomUUID().toString();
 			String dstDir = CST.UPLOAD_DIR + "/upload_tmp_" + uniID;
-			String attachFile = userName + "(申请文件).zip";
+			String attachFile = userName + "_申请文件.zip";
 
 			// 1.制作上传文件夹
 			mkUploadDir(apply, dstDir);
