@@ -3,6 +3,11 @@
  */
 $(function() {
 
+	$('#selfSex').chosen({
+		disable_search : true,
+		width : "100%"
+	});
+	
 	//初始化菜单点击事件
 	$(".menu-anchor").on("click", function() {
 
@@ -27,7 +32,7 @@ $(function() {
 	initPwd();
 	
 	//初始化修改基本信息
-	//initBasicInfo();
+	initBasicInfo();
 	
 	//密码状态检验
 	validatePwd();
@@ -102,7 +107,30 @@ function openModal(customMsg){
 	document.getElementById("editSelfForm").reset();
 	if(customMsg){
 		$("#selfModal .modal-title").empty().append($("<i></i>").addClass("ace-icon fa fa-pencil-square-o")).append(customMsg);
+	}else{
+		$("#selfModal .modal-title").empty().append($("<i></i>").addClass("ace-icon fa fa-address-card")).append("修改个人资料");
 	}
+	
+	//获取个人信息
+	$.ajax({
+		url : $.cxt + '/user/get',
+		type : "POST",
+		dataType:"json",
+		success : function(json) {
+			if (json.code == "0") {
+				$.each(json.data,function(key,value){
+					$("#editSelfForm input[name="+key+"]").val(value);
+					if(key=="sex"){
+						$("#selfSex").val(value);
+						$("#selfSex").trigger('chosen:updated');
+					}
+					if(key=="memo"){
+						$("#editSelfForm textarea[name="+key+"]").val(value);
+					}
+				});
+			}
+		}
+	});
 }
 
 /**
@@ -170,5 +198,46 @@ function validatePwd(){
 			if (data.code == "1") {
 				openModal("您的密码为初始密码，建议您尽快修改");
 			}
-	}});
+		}
+	});
+}
+
+/**
+ * 初始化个人信息修改
+ * @returns
+ */
+function initBasicInfo(){
+	$('#editSelfForm').bootstrapValidator({
+		fields : {
+			userName : {validators : {
+					notEmpty : {message : '请输入用户名称'}
+				}
+			},
+			phoneNo : {validators : {
+					regexp : {regexp : /^[0-9_]{11}$/,message : '手机号码格式不正确'}
+				}
+			},
+			sex : {
+				validators : {
+					regexp : {regexp : /^.*$/,message : '请选择性别'}
+				}
+			}
+		},
+		submitHandler : function(validator, form, submitButton) {
+			$.ajax({
+				url : $.cxt + '/user/edit',
+				data : JSON.stringify($('#editSelfForm').serializeObject()),
+				type : "POST",
+				contentType: "application/json",
+				dataType:"json",
+				loading:true,
+				success : function(data) {
+					if (data.code == "2") {
+						validator.updateStatus("sex",'INVALID', "regexp");
+					} else{
+						// 关闭窗口
+						$('#selfModal').modal('hide');
+					}
+			}});}
+		});
 }

@@ -77,10 +77,10 @@ public class UserAction {
 	public String list(@RequestBody UserForm userForm) {
 		try {
 			// 0.身份认证
-			if(!Session.isSuperAdmin()) {
-				return Ajax.responseString(CST.RES_AUTO_DIALOG,"抱歉您没有权限");
+			if (!Session.isSuperAdmin()) {
+				return Ajax.responseString(CST.RES_AUTO_DIALOG, "抱歉您没有权限");
 			}
-			
+
 			// 1.查询数据
 			Page<TmUser> pageBean = tmUserService.list(userForm);
 			return Ajax.responseString(CST.RES_SUCCESS, pageBean, true);
@@ -125,6 +125,8 @@ public class UserAction {
 	@ResponseBody
 	public String get(String userId) {
 		try {
+			// 0.参数调整
+			userId = (userId == null ? Session.getUser().getUserId() : userId);
 			// 1.查询数据
 			TmUser tmUser = tmUserDao.fetchOneByUserId(userId);
 			return Ajax.responseString(CST.RES_SUCCESS, tmUser);

@@ -201,7 +201,7 @@
 																登录名称
 															</button>
 														</span>
-														<input class="form-control input-mask-date disabled" type="text" name="loginId">
+														<input class="form-control input-mask-date disabled" type="text" name="loginId" disabled="disabled">
 													</div>
 												</div>
 												<div class="form-group">
@@ -234,7 +234,7 @@
 																性别
 															</button>
 														</span>
-														<select class="chosen-select form-control" name="sex" id="sex" data-placeholder="请选择性别...">
+														<select class="chosen-select form-control" name="sex" id="selfSex" data-placeholder="请选择性别...">
 															<option value=""></option>
 															<option value="0">女</option>
 															<option value="1">男</option>
