@@ -21,6 +21,7 @@ import com.ycf.page.Page;
 import com.ycf.page.PageHelper;
 import com.ycf.utils.IdGenerator;
 import com.ycf.utils.MD5;
+import com.ycf.utils.Session;
 
 @Component
 public class TmUserService {
@@ -59,6 +60,14 @@ public class TmUserService {
 				tmUserDao.insert(tmUser);
 			} else {
 				tmUser.setUpdTime(new Timestamp(System.currentTimeMillis()));
+				TmUser tmp = dsl.selectFrom(TM_USER).where(TM_USER.USER_ID.eq(Session.getUser().getUserId()))
+						.fetchOneInto(TmUser.class);
+				Integer pwdStatus = tmp.getPwdStatus();
+				if(pwdStatus==null) {
+					tmUser.setPwdStatus(CST.PWD_STATUS_INIT);
+				}else {
+					tmUser.setPwdStatus(pwdStatus);
+				}
 				tmUserDao.update(tmUser);
 			}
 			return CST.RES_AUTO_DIALOG;
