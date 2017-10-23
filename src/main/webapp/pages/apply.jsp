@@ -1,10 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="<%=request.getContextPath()%>/pages/js/apply.js"></script>
 <style type="text/css">
-textarea, input[type="text"], input[type="password"], input[type="datetime"],
-	input[type="datetime-local"], input[type="date"], input[type="month"],
-	input[type="time"], input[type="week"], input[type="number"], input[type="email"],
-	input[type="url"], input[type="search"], input[type="tel"], input[type="color"]
+#applyInfo textarea, 
+#applyInfo input[type="text"], 
+#applyInfo input[type="password"], 
+#applyInfo input[type="datetime"],
+#applyInfo input[type="datetime-local"], 
+#applyInfo input[type="date"], 
+#applyInfo input[type="month"],
+#applyInfo input[type="time"], 
+#applyInfo input[type="week"], 
+#applyInfo input[type="number"], 
+#applyInfo input[type="email"],
+#applyInfo input[type="url"], 
+#applyInfo input[type="search"], 
+#applyInfo input[type="tel"], 
+#applyInfo input[type="color"]
 	{
 	background-color: #ffffff;
 	border: 1px solid #d5d5d5 !important;
@@ -25,7 +36,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"],
 
 <div class="row">
 	<div class="col-xs-12">
-		<div id="home" class="tab-pane active">
+		<div id="applyInfo" class="tab-pane active">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6">
 					<div class="widget-box transparent">

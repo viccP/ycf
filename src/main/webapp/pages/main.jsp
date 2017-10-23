@@ -47,7 +47,7 @@
 			<div class="navbar-header pull-right">
 				<ul class="nav ace-nav">
 					<li class="grey">
-						<span class="user-info"> 你好，管理员 </span>
+						<span class="user-info" id="userInfo"><i class="ace-icon fa fa-user-circle-o"></i> 你好，${tmUser.userName} </span>
 					</li>
 					<li>
 						<a href="#" id="logout">
@@ -106,6 +106,167 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- 修改用户信息模态框 -->
+	<div class="modal fade" id="selfModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog create-user-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<i class="confirm-close fa fa-times"></i>
+					</button>
+					<h4 class="modal-title">
+						<i class="ace-icon fa fa-address-card"></i>
+						修改个人资料
+					</h4>
+				</div>
+				<div class="modal-body" style="border-radius: 0px 0px 8px 8px;">
+					<div class="signup-box widget-box no-border visible" id="signup-box">
+						<div class="widget-body">
+							<div class="widget-main">
+								<div class="tabbable">
+									<ul class="nav nav-tabs" id="myTab">
+										<li class="active">
+											<a data-toggle="tab" href="#password" aria-expanded="true">
+												<i class="green ace-icon fa fa-lock bigger-120"></i>
+												密码
+											</a>
+										</li>
+
+										<li class="">
+											<a data-toggle="tab" href="#basicInfo" aria-expanded="false">
+												<i class="red ace-icon fa fa-user bigger-120"></i>
+												个人信息
+											</a>
+										</li>
+									</ul>
+									<div class="tab-content">
+										<div id="password" class="tab-pane fade active in">
+											<form id="editPwdfForm">
+												<input class="form-control input-mask-date" type="hidden" name="userId">
+												<div class="form-group">
+													<div class="input-group">
+														<span class="input-group-btn">
+															<button class="btn btn-sm btn-info btn-user-tag" type="button">
+																<i class="ace-icon fa fa-lock bigger-110"></i>
+																旧的密码
+															</button>
+														</span>
+														<input class="form-control input-mask-date" type="password" name="oldPwd">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="input-group">
+														<span class="input-group-btn">
+															<button class="btn btn-sm btn-info btn-user-tag" type="button">
+																<i class="ace-icon fa fa-unlock bigger-110"></i>
+																新的密码
+															</button>
+														</span>
+														<input class="form-control input-mask-date" type="password" name="newPwd">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="input-group">
+														<span class="input-group-btn">
+															<button class="btn btn-sm btn-info btn-user-tag" type="button">
+																<i class="ace-icon fa fa-unlock-alt bigger-110"></i>
+																确认密码
+															</button>
+														</span>
+														<input class="form-control input-mask-date" type="password" name="confirmPwd">
+													</div>
+												</div>
+												<div class="space-12"></div>
+												<div class="clearfix" style="width: 200px; margin: 0 auto;">
+													<button class="width-45 pull-left btn btn-sm btn-default btn4" type="reset">
+														<i class="ace-icon fa fa-refresh"></i>
+														<span class="bigger-110">重置</span>
+													</button>
+													<button class="width-45 pull-right btn btn-sm btn-info" type="submit">
+														<span class="bigger-110">确定</span>
+														<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+													</button>
+												</div>
+											</form>
+										</div>
+										<div id="basicInfo" class="tab-pane fade">
+											<form id="editSelfForm">
+												<input class="form-control input-mask-date" type="hidden" name="userId">
+												<div class="form-group">
+													<div class="input-group">
+														<span class="input-group-btn">
+															<button class="btn btn-sm btn-info btn-user-tag" type="button">
+																<i class="ace-icon fa fa-user bigger-110"></i>
+																登录名称
+															</button>
+														</span>
+														<input class="form-control input-mask-date disabled" type="text" name="loginId">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="input-group">
+														<span class="input-group-btn">
+															<button class="btn btn-sm btn-info btn-user-tag" type="button">
+																<i class="ace-icon fa fa-ticket bigger-110"></i>
+																用户姓名
+															</button>
+														</span>
+														<input class="form-control input-mask-date" type="text" name="userName">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="input-group">
+														<span class="input-group-btn">
+															<button class="btn btn-sm btn-info btn-user-tag" type="button">
+																<i class="ace-icon fa fa-phone bigger-110"></i>
+																联系方式
+															</button>
+														</span>
+														<input class="form-control input-mask-date" type="text" name="phoneNo">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="input-group">
+														<span class="input-group-btn">
+															<button class="btn btn-sm btn-info btn-user-tag" type="button">
+																<i class="ace-icon fa fa-male bigger-110"></i>
+																性别
+															</button>
+														</span>
+														<select class="chosen-select form-control" name="sex" id="sex" data-placeholder="请选择性别...">
+															<option value=""></option>
+															<option value="0">女</option>
+															<option value="1">男</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<textarea placeholder="请填写备注..." class="form-control" name="memo"></textarea>
+												</div>
+												<div class="space-12"></div>
+												<div class="clearfix" style="width: 200px; margin: 0 auto;">
+													<button class="width-45 pull-left btn btn-sm btn-default btn4" type="reset">
+														<i class="ace-icon fa fa-refresh"></i>
+														<span class="bigger-110">重置</span>
+													</button>
+													<button class="width-45 pull-right btn btn-sm btn-info" type="submit">
+														<span class="bigger-110">确定</span>
+														<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+													</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 	<div class="footer">
 		<div class="footer-inner">
@@ -173,6 +334,7 @@
 	<script src="<%=request.getContextPath()%>/resource/ace/js/select2.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/ace/js/chosen.jquery.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/bootstrapvalidator/js/bootstrapValidator.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/common/md5.js"></script>
 	<script src="<%=request.getContextPath()%>/pages/js/main.js"></script>
 </body>
 </html>

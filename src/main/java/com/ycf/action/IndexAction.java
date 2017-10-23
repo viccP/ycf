@@ -60,15 +60,14 @@ public class IndexAction {
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
 		}
 	}
-	
 
 	/**
 	 * 
-	 * logout:(登出). <br/> 
+	 * logout:(登出). <br/>
 	 * 
 	 * @author liboqiang
 	 * @param session
-	 * @return 
+	 * @return
 	 * @since JDK 1.6
 	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
@@ -103,4 +102,73 @@ public class IndexAction {
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
 		}
 	}
+
+	/**
+	 * 
+	 * modifyPwd:(修改密码). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param oldPwd
+	 * @param newPwd
+	 * @param confirmPwd
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/modifyPwd", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String modifyPwd(String oldPwd, String newPwd, String confirmPwd) {
+		try {
+			// 0.获取用户ID
+			String userId = Session.getUser().getUserId();
+
+			// 1.旧密码验证
+			TmUser res = dsl.selectFrom(TM_USER).where(TM_USER.USER_ID.eq(userId))
+					.and(TM_USER.PASSWORD.eq(oldPwd.toUpperCase())).fetchOneInto(TmUser.class);
+
+			if (res == null) {
+				return Ajax.responseString(CST.RES_LOGIC_ERROR_1, "旧密码验证错误");
+			}
+
+			// 2.密码一致性验证
+			if (!newPwd.equals(confirmPwd)) {
+				return Ajax.responseString(CST.RES_LOGIC_ERROR_2, "两次密码不一致,请重新输入");
+			}
+
+			// 3.修改密码
+			dsl.update(TM_USER).set(TM_USER.PASSWORD, newPwd.toUpperCase()).set(TM_USER.PWD_STATUS, CST.PWD_STATUS_ALTERED)
+					.where(TM_USER.USER_ID.eq(userId)).execute();
+			
+
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, "密码修改成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+
+
+	/**
+	 * 
+	 * vlidatePwd:(验证密码状态). <br/> 
+	 * 
+	 * @author liboqiang
+	 * @return 
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/vlidatePwd", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String vlidatePwd() {
+		try {
+			TmUser tmUser = dsl.selectFrom(TM_USER).where(TM_USER.USER_ID.eq(Session.getUser().getUserId()))
+					.fetchOneInto(TmUser.class);
+			if (CST.PWD_STATUS_INIT == tmUser.getPwdStatus()) {
+				return Ajax.responseString(CST.RES_LOGIC_ERROR_1);
+			}
+			return Ajax.responseString(CST.RES_SUCCESS);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+
 }
