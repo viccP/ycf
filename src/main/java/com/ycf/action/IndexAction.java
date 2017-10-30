@@ -1,9 +1,17 @@
 package com.ycf.action;
 
+import static com.ycf.dao.tables.ApplyInfo.APPLY_INFO;
 import static com.ycf.dao.tables.TmUser.TM_USER;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
+import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ycf.bean.TodoForm;
 import com.ycf.cst.CST;
 import com.ycf.dao.tables.pojos.TmUser;
 import com.ycf.utils.Ajax;
@@ -135,9 +144,8 @@ public class IndexAction {
 			}
 
 			// 3.修改密码
-			dsl.update(TM_USER).set(TM_USER.PASSWORD, newPwd.toUpperCase()).set(TM_USER.PWD_STATUS, CST.PWD_STATUS_ALTERED)
-					.where(TM_USER.USER_ID.eq(userId)).execute();
-			
+			dsl.update(TM_USER).set(TM_USER.PASSWORD, newPwd.toUpperCase())
+					.set(TM_USER.PWD_STATUS, CST.PWD_STATUS_ALTERED).where(TM_USER.USER_ID.eq(userId)).execute();
 
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, "密码修改成功");
 		} catch (Exception e) {
@@ -146,13 +154,12 @@ public class IndexAction {
 		}
 	}
 
-
 	/**
 	 * 
-	 * vlidatePwd:(验证密码状态). <br/> 
+	 * vlidatePwd:(验证密码状态). <br/>
 	 * 
 	 * @author liboqiang
-	 * @return 
+	 * @return
 	 * @since JDK 1.6
 	 */
 	@RequestMapping(value = "/vlidatePwd", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
@@ -169,6 +176,85 @@ public class IndexAction {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
 		}
+	}
+
+	/**
+	 * 
+	 * getTodoList:(获取待办列表). <br/>
+	 * 
+	 * @author liboqiang
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/getTodoList", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String getTodoList() {
+		try {
+			// 管理员查看所有申请
+			if (Session.isSuperAdmin()) {
+				List<TodoForm> reslst = dsl
+						.select(APPLY_INFO.APPLY_ID,
+								DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, APPLY_INFO.APPLY_TIME)
+										.as("applyTime"),
+								APPLY_INFO.APPLY_TITLE, TM_USER.USER_NAME)
+						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER))
+						.where(APPLY_INFO.STATUS.eq(CST.APPLY_STATUS_WAITE)).orderBy(APPLY_INFO.APPLY_TIME).limit(5)
+						.fetchInto(TodoForm.class);
+
+				// 添加自定义信息
+				reslst.stream().map(apply -> {
+					apply.setApplyTitle("发起了报件申请");
+					apply.setApplyTime(resetTime(apply.getApplyTime()));
+					return apply;
+				}).collect(Collectors.toList());
+
+				return Ajax.responseString(CST.RES_SUCCESS, reslst);
+			} else {
+
+			}
+			return Ajax.responseString(CST.RES_SUCCESS);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 * resetTime:(重置时间). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param applyTime
+	 * @return
+	 * @throws ParseException
+	 * @since JDK 1.6
+	 */
+	private String resetTime(String applyTime) {
+
+		try {
+			long applyTimeNum = new SimpleDateFormat("yyyyMMddHHmmss").parse(applyTime).getTime();
+			long now = new Date().getTime();
+			long recTime = (now - applyTimeNum) / 1000;
+			if (recTime < 60) {
+				return recTime + "秒前";
+			} else {
+				recTime = recTime / 60;
+				if (recTime < 60) {
+					return recTime + "分前";
+				} else {
+					recTime = recTime / 60;
+					if (recTime < 24) {
+						return recTime + "小时前";
+					} else {
+						recTime = recTime / 24;
+						return recTime + "天前";
+					}
+				}
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

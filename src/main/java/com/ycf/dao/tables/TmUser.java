@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TmUser extends TableImpl<TmUserRecord> {
 
-    private static final long serialVersionUID = -1491269832;
+    private static final long serialVersionUID = -288786576;
 
     /**
      * The reference instance of <code>system.tm_user</code>
@@ -53,7 +53,7 @@ public class TmUser extends TableImpl<TmUserRecord> {
     /**
      * The column <code>system.tm_user.user_id</code>. 用户id
      */
-    public final TableField<TmUserRecord, String> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.VARCHAR.length(18).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "用户id");
+    public final TableField<TmUserRecord, String> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "用户id");
 
     /**
      * The column <code>system.tm_user.login_id</code>. 登录id

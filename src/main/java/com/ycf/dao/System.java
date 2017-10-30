@@ -4,6 +4,7 @@
 package com.ycf.dao;
 
 
+import com.ycf.dao.tables.ApplyInfo;
 import com.ycf.dao.tables.TmUser;
 
 import java.util.ArrayList;
@@ -30,12 +31,17 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class System extends SchemaImpl {
 
-    private static final long serialVersionUID = 366284410;
+    private static final long serialVersionUID = -1330637370;
 
     /**
      * The reference instance of <code>system</code>
      */
     public static final System SYSTEM = new System();
+
+    /**
+     * The table <code>system.apply_info</code>.
+     */
+    public final ApplyInfo APPLY_INFO = com.ycf.dao.tables.ApplyInfo.APPLY_INFO;
 
     /**
      * The table <code>system.tm_user</code>.
@@ -67,6 +73,7 @@ public class System extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
+            ApplyInfo.APPLY_INFO,
             TmUser.TM_USER);
     }
 }

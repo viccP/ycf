@@ -907,7 +907,7 @@ a {
 a:hover,
 a:focus {
   color: #23527c;
-  text-decoration: underline;
+ /*  text-decoration: underline; */
 }
 a:focus {
   outline: thin dotted;
@@ -3647,7 +3647,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
-  background-color: #eeeeee;
+ /*  background-color: #eeeeee; */
   border-color: #337ab7;
 }
 .nav .nav-divider {

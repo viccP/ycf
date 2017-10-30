@@ -16,6 +16,7 @@
 	vertical-align: top;
 	white-space: nowrap;
 	cursor: pointer;
+	margin-right: 11px;
 }
 
 .sidebar {
@@ -88,4 +89,20 @@
 #selfSex_chosen .chosen-single {
 	border-radius: 0px;
 	margin-top: 0px;
+}
+
+.ace-nav > li {
+    line-height: 20px;
+    height: 45px;
+    padding: 0;
+    position: relative;
+    float: left;
+}
+
+.dropdown-navbar .msg-body {
+    display: block;
+    line-height: 20px;
+    white-space: normal;
+    vertical-align: middle;
+    margin-left: 0px;
 }

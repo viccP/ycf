@@ -4,6 +4,7 @@
 package com.ycf.dao;
 
 
+import com.ycf.dao.tables.ApplyInfo;
 import com.ycf.dao.tables.TmUser;
 
 import javax.annotation.Generated;
@@ -21,6 +22,11 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>system.apply_info</code>.
+     */
+    public static final ApplyInfo APPLY_INFO = com.ycf.dao.tables.ApplyInfo.APPLY_INFO;
 
     /**
      * The table <code>system.tm_user</code>.

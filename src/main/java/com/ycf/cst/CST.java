@@ -38,6 +38,15 @@ public class CST {
 	/**用户默认密码(000000)**/
 	public static final String PWD_DEFAULT = "000000";  
 	
+	/**申请状态(0:完成)**/
+	public static final Integer APPLY_STATUS_FINISH = 0;
+	
+	/**申请状态(1:待审批)**/
+	public static final Integer APPLY_STATUS_WAITE = 1;
+	
+	/**申请状态(2:驳回)**/
+	public static final Integer APPLY_STATUS_REJECTED = 0;
+	
 	@SuppressWarnings("serial")
 	public static final Map<String,String> PIC_MAPPER=new HashMap<String,String>(){{  
 	      put("getCreditPic","征信");
@@ -52,10 +61,6 @@ public class CST {
 	      put("getBankPic","收入证明与银行流水");   
 	      put("getIdPic","申请人及配偶身份证");   
 	}};
-
-
-
-
 
 	/**上传文件夹地址**/
 	public static String UPLOAD_DIR="";

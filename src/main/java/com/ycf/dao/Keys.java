@@ -4,7 +4,9 @@
 package com.ycf.dao;
 
 
+import com.ycf.dao.tables.ApplyInfo;
 import com.ycf.dao.tables.TmUser;
+import com.ycf.dao.tables.records.ApplyInfoRecord;
 import com.ycf.dao.tables.records.TmUserRecord;
 
 import javax.annotation.Generated;
@@ -36,6 +38,7 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<ApplyInfoRecord> KEY_APPLY_INFO_PRIMARY = UniqueKeys0.KEY_APPLY_INFO_PRIMARY;
     public static final UniqueKey<TmUserRecord> KEY_TM_USER_PRIMARY = UniqueKeys0.KEY_TM_USER_PRIMARY;
 
     // -------------------------------------------------------------------------
@@ -48,6 +51,7 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     private static class UniqueKeys0 extends AbstractKeys {
+        public static final UniqueKey<ApplyInfoRecord> KEY_APPLY_INFO_PRIMARY = createUniqueKey(ApplyInfo.APPLY_INFO, "KEY_apply_info_PRIMARY", ApplyInfo.APPLY_INFO.APPLY_ID);
         public static final UniqueKey<TmUserRecord> KEY_TM_USER_PRIMARY = createUniqueKey(TmUser.TM_USER, "KEY_tm_user_PRIMARY", TmUser.TM_USER.USER_ID);
     }
 }

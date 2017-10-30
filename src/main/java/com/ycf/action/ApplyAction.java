@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.Map;
 import java.util.UUID;
 
@@ -22,9 +23,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ycf.bean.MainForm;
 import com.ycf.cst.CST;
+import com.ycf.dao.tables.daos.ApplyInfoDao;
+import com.ycf.dao.tables.pojos.ApplyInfo;
 import com.ycf.service.EmailService;
 import com.ycf.utils.Ajax;
 import com.ycf.utils.CmdUtils;
+import com.ycf.utils.IdGenerator;
+import com.ycf.utils.SerializUtil;
 import com.ycf.utils.Session;
 
 /**
@@ -44,6 +49,30 @@ public class ApplyAction {
 	@Autowired
 	private EmailService emailService;
 
+	@Autowired
+	private ApplyInfoDao applyInfoDao;
+
+	@RequestMapping(value = "/test", method = RequestMethod.GET, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public void test() {
+
+		ApplyInfo object = new ApplyInfo();
+		object.setApplyId(IdGenerator.genId());
+		object.setApplyTitle("这是一个小小的测试");
+		object.setApplyTime(new Timestamp(System.currentTimeMillis()));
+		object.setStatus(0);
+		MainForm data = new MainForm();
+		data.setAddr("aaaaa");
+		data.setAddrPostCode("ccccccc");
+		data.setAge("ccccccccc");
+		object.setData(SerializUtil.java2Stream(data));
+		object.setApplyUser("aaaa");
+		applyInfoDao.insert(object);
+		ApplyInfo bean = applyInfoDao.fetchOneByApplyId("329DD450C12D49DF85F628B6819022A4");
+		MainForm data1 = SerializUtil.stream2Java(bean.getData());
+		System.out.println(data1.getAddr());
+	}
+
 	/**
 	 * 
 	 * apply:(提交申请). <br/>
@@ -57,6 +86,10 @@ public class ApplyAction {
 	@ResponseBody
 	public String apply(MainForm apply) {
 		try {
+			
+			if(Session.isSuperAdmin()) {
+				return Ajax.responseString(CST.RES_AUTO_DIALOG, "管理员不能提交申请哦:)");
+			}
 
 			// 操作文件夹
 			String userName = Session.getUser().getUserName();
@@ -83,7 +116,17 @@ public class ApplyAction {
 			// 4.删除文件
 			CmdUtils.exec("rm -rf " + dstDir);
 
-			// 5.返回前台
+			// 5.存入数据库
+			ApplyInfo object = new ApplyInfo();
+			object.setApplyId(IdGenerator.genId());
+			object.setApplyTitle("报件申请");
+			object.setApplyTime(new Timestamp(System.currentTimeMillis()));
+			object.setApplyUser(Session.getUser().getUserId());
+			object.setStatus(CST.APPLY_STATUS_WAITE);
+			object.setData(SerializUtil.java2Stream(apply));
+			applyInfoDao.insert(object);
+
+			// 6.返回前台
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, "提交成功");
 		} catch (Exception e) {
 			e.printStackTrace();

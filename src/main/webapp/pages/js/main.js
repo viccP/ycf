@@ -25,7 +25,7 @@ $(function() {
 	
 	//初始化个人资料修改
 	$("#userInfo").on("click",function(){
-		openModal();
+		openModalMain();
 	});
 	
 	//初始化修改密码
@@ -36,6 +36,9 @@ $(function() {
 	
 	//密码状态检验
 	validatePwd();
+	
+	//初始化待办列表
+	initTodoList();
 	
 	//初始化登出按钮
 	$("#logout").on("click",function(){
@@ -92,7 +95,7 @@ function initFirstPage() {
  * 打开模态框
  * @returns
  */
-function openModal(customMsg){
+function openModalMain(customMsg){
 	$("#selfModal").modal({
 		backdrop : 'static',
 		keyboard : false,
@@ -196,7 +199,7 @@ function validatePwd(){
 		loading:true,
 		success : function(data) {
 			if (data.code == "1") {
-				openModal("您的密码为初始密码，建议您尽快修改");
+				openModalMain("您的密码为初始密码，建议您尽快修改");
 			}
 		}
 	});
@@ -240,4 +243,19 @@ function initBasicInfo(){
 					}
 			}});}
 		});
+}
+
+/**
+ * 初始化待办列表
+ * @returns
+ */
+function initTodoList(){
+	$.ajax({
+		url : $.cxt + '/index/getTodoList',
+		type : "POST",
+		dataType:"json",
+		success : function(data) {
+			console.log(data);
+		}
+	});
 }

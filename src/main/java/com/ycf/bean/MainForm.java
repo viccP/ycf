@@ -1,9 +1,14 @@
 package com.ycf.bean;
 
+import java.io.Serializable;
+
 import org.springframework.web.multipart.MultipartFile;
 
-public class MainForm {
+public class MainForm implements Serializable {
 
+	/** 生成的序列号 **/  
+	private static final long serialVersionUID = 8968042052714753811L;
+	
 	// 基本信息
 	private String name;
 	private String sex;
@@ -1181,61 +1186,64 @@ public class MainForm {
 		this.creditPic = creditPic;
 	}
 
-	/** 
-	* compAddr. 
-	* 
-	* @return  the compAddr 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * compAddr.
+	 * 
+	 * @return the compAddr
+	 * @since JDK 1.6
+	 */
 	public String getCompAddr() {
 		return compAddr;
 	}
 
-	/** 
-	 * compAddr. 
+	/**
+	 * compAddr.
 	 * 
-	 * @param   compAddr    the compAddr to set 
-	 * @since   JDK 1.6 
+	 * @param compAddr
+	 *            the compAddr to set
+	 * @since JDK 1.6
 	 */
 	public void setCompAddr(String compAddr) {
 		this.compAddr = compAddr;
 	}
 
-	/** 
-	* compPostCode. 
-	* 
-	* @return  the compPostCode 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * compPostCode.
+	 * 
+	 * @return the compPostCode
+	 * @since JDK 1.6
+	 */
 	public String getCompPostCode() {
 		return compPostCode;
 	}
 
-	/** 
-	 * compPostCode. 
+	/**
+	 * compPostCode.
 	 * 
-	 * @param   compPostCode    the compPostCode to set 
-	 * @since   JDK 1.6 
+	 * @param compPostCode
+	 *            the compPostCode to set
+	 * @since JDK 1.6
 	 */
 	public void setCompPostCode(String compPostCode) {
 		this.compPostCode = compPostCode;
 	}
 
-	/** 
-	* spouseJobTitle. 
-	* 
-	* @return  the spouseJobTitle 
-	* @since   JDK 1.6 
-	*/
+	/**
+	 * spouseJobTitle.
+	 * 
+	 * @return the spouseJobTitle
+	 * @since JDK 1.6
+	 */
 	public String getSpouseJobTitle() {
 		return spouseJobTitle;
 	}
 
-	/** 
-	 * spouseJobTitle. 
+	/**
+	 * spouseJobTitle.
 	 * 
-	 * @param   spouseJobTitle    the spouseJobTitle to set 
-	 * @since   JDK 1.6 
+	 * @param spouseJobTitle
+	 *            the spouseJobTitle to set
+	 * @since JDK 1.6
 	 */
 	public void setSpouseJobTitle(String spouseJobTitle) {
 		this.spouseJobTitle = spouseJobTitle;

@@ -5,4 +5,7 @@
 	<bean id="tmUserDao" class="com.ycf.dao.tables.daos.TmUserDao">
 		<constructor-arg ref="config" />
 	</bean>
+	<bean id="applyInfoDao" class="com.ycf.dao.tables.daos.ApplyInfoDao">
+		<constructor-arg ref="config" />
+	</bean>
 </beans>
