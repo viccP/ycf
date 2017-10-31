@@ -55,39 +55,19 @@
 					<li>
 						<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
 							<i class="ace-icon fa fa-bell"></i>
-							<span class="badge badge-danger">5</span>
+							<span class="badge badge-danger" id="tipNum"></span>
 						</a>
 						<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-							<li class="dropdown-header">
-								<i class="ace-icon fa fa-envelope-o"></i>
-								5 条待办
-							</li>
+							<li class="dropdown-header" id="titleNum"></li>
 
 							<li class="dropdown-content ace-scroll" style="position: relative;">
 								<div class="scroll-track" style="display: block; height: 200px;">
 									<div class="scroll-bar" style="height: 111px; top: 0px;"></div>
 								</div>
 								<div class="scroll-content" style="max-height: 200px;">
-									<ul class="dropdown-menu dropdown-navbar" id="todoList">
-										<li>
-											<a href="#" class="clearfix">
-												<span class="msg-body">
-													<span class="msg-title">
-														<span class="blue">Alex:</span>
-														Ciao sociis natoque penatibus et auctor ...
-													</span>
-
-													<span class="msg-time">
-														<i class="ace-icon fa fa-clock-o"></i>
-														<span>a moment ago</span>
-													</span>
-												</span>
-											</a>
-										</li>
-									</ul>
+									<ul class="dropdown-menu dropdown-navbar" id="todoList"></ul>
 								</div>
 							</li>
-
 							<li class="dropdown-footer">
 								<a href="inbox.html">
 									查看所有

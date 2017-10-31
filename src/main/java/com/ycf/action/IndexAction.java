@@ -194,16 +194,17 @@ public class IndexAction {
 			if (Session.isSuperAdmin()) {
 				List<TodoForm> reslst = dsl
 						.select(APPLY_INFO.APPLY_ID,
-								DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, APPLY_INFO.APPLY_TIME)
-										.as("applyTime"),
-								APPLY_INFO.APPLY_TITLE, TM_USER.USER_NAME)
+								DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, APPLY_INFO.APPLY_TIME).as("applyTime"),
+								APPLY_INFO.APPLY_TITLE, 
+								TM_USER.USER_NAME)
 						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER))
-						.where(APPLY_INFO.STATUS.eq(CST.APPLY_STATUS_WAITE)).orderBy(APPLY_INFO.APPLY_TIME).limit(5)
+						.where(APPLY_INFO.STATUS.eq(CST.APPLY_STATUS_WAITE))
+						.orderBy(APPLY_INFO.APPLY_TIME)
+						.limit(5)
 						.fetchInto(TodoForm.class);
 
 				// 添加自定义信息
 				reslst.stream().map(apply -> {
-					apply.setApplyTitle("发起了报件申请");
 					apply.setApplyTime(resetTime(apply.getApplyTime()));
 					return apply;
 				}).collect(Collectors.toList());
@@ -253,8 +254,7 @@ public class IndexAction {
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
-
 }

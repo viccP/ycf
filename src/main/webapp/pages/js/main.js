@@ -254,8 +254,30 @@ function initTodoList(){
 		url : $.cxt + '/index/getTodoList',
 		type : "POST",
 		dataType:"json",
-		success : function(data) {
-			console.log(data);
+		success : function(json) {
+			var tipNum=json.data.length;
+			
+			//设置提数数目
+			$("#tipNum").empty().append(tipNum);
+			$("#titleNum").empty().append($("<i></i>").addClass("ace-icon fa fa-envelope-o").append(tipNum+"条待办"));
+			
+			//生成下拉菜单
+			$("#todoList").empty();
+			$.each(json.data,function(index,val){
+				$("#todoList").append($("<li></li>").append(
+					$("<a></a>").attr({"href":"#","applyId":val.applyId}).addClass("clearfix").append(
+						$("<span></span>").addClass("msg-body")
+						.append(
+							$("<span></span>").addClass("msg-title").append($("<span></span>").addClass("blue").append(val.applyUser+":")).append(val.applyTitle)
+						)
+						.append(
+							$("<span></span>").addClass("msg-time")
+							.append($("<i></i>").addClass("ace-icon fa fa-clock-o"))
+							.append($($("<span></span>")).append(val.applyTime))
+						)
+					)
+				));
+			});
 		}
 	});
 }
