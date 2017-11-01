@@ -19,6 +19,16 @@ $(function() {
 			$("#pageContent").html(data);//初始化加载界面  
 		});
 	});
+	
+	
+	//提示栏事件
+	$("#viewAll").on("click",function(){
+		//加载页面
+		$.get($.cxt+"/pages/applyRecord.jsp", function(data) {
+			$("body").data("applyIdArgs","");
+			$("#pageContent").html(data);//初始化加载界面  
+		});
+	});
 
 	//初始加载
 	initFirstPage();
@@ -258,8 +268,11 @@ function initTodoList(){
 			var tipNum=json.data.length;
 			
 			//设置提数数目
-			$("#tipNum").empty().append(tipNum);
-			$("#titleNum").empty().append($("<i></i>").addClass("ace-icon fa fa-envelope-o").append(tipNum+"条待办"));
+			$("#tipNum").empty()
+			if(tipNum>0){
+				$("#tipNum").append(tipNum);
+			}
+			$("#titleNum").empty().append($("<i></i>").addClass("ace-icon fa fa-envelope-o")).append(tipNum+"条待办");
 			
 			//生成下拉菜单
 			$("#todoList").empty();
@@ -276,6 +289,13 @@ function initTodoList(){
 							.append($($("<span></span>")).append(val.applyTime))
 						)
 					)
+					.on("click",function(){
+						//加载页面
+						$.get($.cxt+"/pages/applyRecord.jsp?", function(data) {
+							$("body").data("applyIdArgs",val.applyId);
+							$("#pageContent").html(data);//初始化加载界面  
+						});
+					})
 				));
 			});
 		}

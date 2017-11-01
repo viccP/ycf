@@ -69,7 +69,7 @@
 								</div>
 							</li>
 							<li class="dropdown-footer">
-								<a href="inbox.html">
+								<a href="#" id="viewAll">
 									查看所有
 									<i class="ace-icon fa fa-arrow-right"></i>
 								</a>

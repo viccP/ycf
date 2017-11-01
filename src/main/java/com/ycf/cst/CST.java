@@ -45,7 +45,7 @@ public class CST {
 	public static final Integer APPLY_STATUS_WAITE = 1;
 	
 	/**申请状态(2:驳回)**/
-	public static final Integer APPLY_STATUS_REJECTED = 0;
+	public static final Integer APPLY_STATUS_REJECTED = 2;
 	
 	@SuppressWarnings("serial")
 	public static final Map<String,String> PIC_MAPPER=new HashMap<String,String>(){{  

@@ -1,5 +1,8 @@
 package com.ycf.action;
 
+import static com.ycf.dao.tables.ApplyInfo.APPLY_INFO;
+import static com.ycf.dao.tables.TmUser.TM_USER;
+
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,19 +15,27 @@ import java.sql.Timestamp;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Range;
+import org.jooq.SelectConditionStep;
+import org.jooq.impl.DSL;
+import org.jooq.impl.DefaultDSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ycf.bean.MainForm;
+import com.ycf.bean.TodoForm;
 import com.ycf.cst.CST;
 import com.ycf.dao.tables.daos.ApplyInfoDao;
 import com.ycf.dao.tables.pojos.ApplyInfo;
+import com.ycf.page.Page;
+import com.ycf.page.PageHelper;
 import com.ycf.service.EmailService;
 import com.ycf.utils.Ajax;
 import com.ycf.utils.CmdUtils;
@@ -52,26 +63,11 @@ public class ApplyAction {
 	@Autowired
 	private ApplyInfoDao applyInfoDao;
 
-	@RequestMapping(value = "/test", method = RequestMethod.GET, produces = "text/html;charset=utf-8")
-	@ResponseBody
-	public void test() {
+	@Autowired
+	private DefaultDSLContext dsl;
 
-		ApplyInfo object = new ApplyInfo();
-		object.setApplyId(IdGenerator.genId());
-		object.setApplyTitle("这是一个小小的测试");
-		object.setApplyTime(new Timestamp(System.currentTimeMillis()));
-		object.setStatus(0);
-		MainForm data = new MainForm();
-		data.setAddr("aaaaa");
-		data.setAddrPostCode("ccccccc");
-		data.setAge("ccccccccc");
-		object.setData(SerializUtil.java2Stream(data));
-		object.setApplyUser("aaaa");
-		applyInfoDao.insert(object);
-		ApplyInfo bean = applyInfoDao.fetchOneByApplyId("329DD450C12D49DF85F628B6819022A4");
-		MainForm data1 = SerializUtil.stream2Java(bean.getData());
-		System.out.println(data1.getAddr());
-	}
+	@Autowired
+	private PageHelper<TodoForm> pageHelper;
 
 	/**
 	 * 
@@ -86,8 +82,8 @@ public class ApplyAction {
 	@ResponseBody
 	public String apply(MainForm apply) {
 		try {
-			
-			if(Session.isSuperAdmin()) {
+
+			if (Session.isSuperAdmin()) {
 				return Ajax.responseString(CST.RES_AUTO_DIALOG, "管理员不能提交申请哦:)");
 			}
 
@@ -211,6 +207,108 @@ public class ApplyAction {
 				File upFile = new File(dstDir + "/" + entry.getValue(), file.getOriginalFilename());
 				file.transferTo(upFile);
 			}
+		}
+	}
+
+	/**
+	 * 
+	 * getApplyRecords:(获取申请记录列表). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param todoForm
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/getApplyRecords", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String getApplyRecords(@RequestBody TodoForm todoForm) {
+		try {
+
+			// 身份认证
+			if (Session.isSuperAdmin()) {
+				
+				// 定义sql
+				SelectConditionStep<?> sql = dsl
+						.select(APPLY_INFO.APPLY_ID,
+								DSL.field("date_format({0},'%Y-%m-%d %H:%i:%s')", String.class, APPLY_INFO.APPLY_TIME)
+										.as("applyTime"),
+								APPLY_INFO.APPLY_TITLE, TM_USER.USER_NAME.as("applyUser"),
+								DSL.val(Session.isSuperAdmin()).as("isAdmin"), APPLY_INFO.STATUS, APPLY_INFO.REJECT_MSG)
+						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER)).where("1=1");
+				
+				// 申请人是否为空
+				if (!StringUtils.isEmpty(todoForm.getApplyUser())) {
+					sql.and(TM_USER.USER_NAME.contains(todoForm.getApplyUser()));
+				}
+				
+				// 申请状态是否为空
+				if (todoForm.getStatus() != null) {
+					sql.and(APPLY_INFO.STATUS.contains(todoForm.getStatus()));
+				}
+
+				// 申请ID是否为空
+				if (!StringUtils.isEmpty(todoForm.getApplyId())) {
+					sql.and(APPLY_INFO.APPLY_ID.eq(todoForm.getApplyId()));
+				}
+
+				// 添加排序
+				sql.orderBy(TM_USER.UPD_TIME.asc());
+				Page<TodoForm> res = pageHelper.get(todoForm.getPage(), todoForm.getRows(), sql, TodoForm.class);
+				return Ajax.responseString(CST.RES_SUCCESS, res, true);
+			}
+			else {
+				// 定义sql
+				SelectConditionStep<?> sql = dsl
+						.select(APPLY_INFO.APPLY_ID,
+								DSL.field("date_format({0},'%Y-%m-%d %H:%i:%s')", String.class, APPLY_INFO.APPLY_TIME).as("applyTime"),
+								APPLY_INFO.APPLY_TITLE, TM_USER.USER_NAME.as("applyUser"),
+								DSL.val(Session.isSuperAdmin()).as("isAdmin"), APPLY_INFO.STATUS, APPLY_INFO.REJECT_MSG)
+						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER)).where(TM_USER.USER_ID.eq(Session.getUser().getUserId()));
+				
+				// 申请状态是否为空
+				if (todoForm.getStatus() != null) {
+					sql.and(APPLY_INFO.STATUS.contains(todoForm.getStatus()));
+				}
+
+				// 申请ID是否为空
+				if (!StringUtils.isEmpty(todoForm.getApplyId())) {
+					sql.and(APPLY_INFO.APPLY_ID.eq(todoForm.getApplyId()));
+				}
+
+				// 添加排序
+				sql.orderBy(TM_USER.UPD_TIME.asc());
+				Page<TodoForm> res = pageHelper.get(todoForm.getPage(), todoForm.getRows(), sql, TodoForm.class);
+				return Ajax.responseString(CST.RES_SUCCESS, res, true);
+			}
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 * getApplyRecords:(获取申请记录列表). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param todoForm
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/approve", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String approve(@RequestBody TodoForm todoForm) {
+		try {
+			// 更新申请记录表
+			dsl.update(APPLY_INFO).set(APPLY_INFO.STATUS, todoForm.getStatus())
+					.set(APPLY_INFO.REJECT_MSG, todoForm.getRejectMsg())
+					.where(APPLY_INFO.APPLY_ID.eq(todoForm.getApplyId())).execute();
+
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, "审批成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
 		}
 	}
 
