@@ -16,6 +16,7 @@ $(function() {
 
 		//加载页面
 		$.get($(this).attr("path"), function(data) {
+			$("body").data("applyIdArgs","");
 			$("#pageContent").html(data);//初始化加载界面  
 		});
 	});

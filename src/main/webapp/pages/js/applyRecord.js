@@ -192,13 +192,29 @@ function renderOperation(cellvalue, options, cell) {
 		}
 	}
 	else{
-		container.append(
+		if(cell.status=="1"){
+			container.append(
+				$("<button></button>")
+				.append($("<i></i>").addClass("ui-icon bigger-130 fa fa-spinner fa-spin orange"))
+				.addClass("btn btn-xs grid-btn grids-btn")
+				.attr("title", "等待管理员审批")
+			)
+		}else if(cell.status=="2"){
+			container.append(
 				$("<button></button>")
 				.append($("<i></i>").addClass("ui-icon bigger-130 fa fa-pencil-square-o green"))
-				.attr("onclick","delUser('" + cell.applyId + "')")
+				.attr("onclick","edit('" + cell.applyId + "')")
 				.addClass("btn btn-xs grid-btn grids-btn")
 				.attr("title", "重新填写")
 			)
+		} else{
+			container.append(
+				$("<button></button>")
+				.append($("<i></i>").addClass("ui-icon bigger-130 fa fa-check green"))
+				.addClass("btn btn-xs grid-btn grids-btn")
+				.attr("title", "完成")
+			)
+		}	
 	}
 	return container.html();
 }
@@ -215,7 +231,7 @@ function doSearch(){
 }
 
 /**
- * 删除用户
+ * 审批
  * @param userId
  * @returns
  */
@@ -227,3 +243,18 @@ function approve(applyId){
 	});
 	$("#approveForm input[name=applyId]").val(applyId);
 }
+
+/**
+ * 重新填写
+ * @param applyId
+ * @returns
+ */
+function edit(applyId){
+	//加载页面
+	$.get($.cxt+"/pages/apply.jsp", function(data) {
+		$("body").data("applyIdArgs",applyId);
+		$("#pageContent").html(data);//初始化加载界面  
+	});
+}
+
+
