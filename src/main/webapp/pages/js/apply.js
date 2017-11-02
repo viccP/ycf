@@ -3,6 +3,37 @@
  */
 $(function(){
 	
+	//获取申请ID
+	var applyId=$("body").data("applyIdArgs");
+	
+	if(applyId){
+		//提交后台
+		$.ajax({
+			url : $.cxt + "/apply/rebuild",
+			data : {applyId:applyId},
+			type : "POST",
+			dataType : "json",
+			loading:true,
+			success:function(json){
+				$.each(json.data,function(key,value){
+					//文本框
+					$("input[name="+key+"][type=text]").val(value);
+					
+					//勾选框
+					$.each($("input[name="+key+"][type=checkbox]"),function(){
+						if($(this).next().text()==value){
+							$(this).prop("checked","checked");
+						}
+					});
+					
+					//输入框
+					$("span.percent[name="+key+"]").text(value);
+					
+				});
+			}
+		});
+	}
+	
 	//初始化滚动条
 	$('#uploads').ace_scroll({
 		size:300,
@@ -17,7 +48,7 @@ $(function(){
 	initBootBox();
 	
 	// 初始化保存按钮
-	initSaveBtn();
+	initSaveBtn(applyId);
 	
 	// 初始化上传
 	initUploads();
@@ -67,7 +98,7 @@ function initBootBox(){
  * 
  * @returns
  */
-function initSaveBtn(){
+function initSaveBtn(applyId){
 	
 	//构造Json
 	$("#savebtn").on("click",function(){
@@ -92,7 +123,7 @@ function initSaveBtn(){
 			json.append($(this).attr("name"),$(this).text());
 			
 		});
-		
+		debugger
 		//获取上传文件
 		$.each($("body").data("uploads")||{},function(key,val){
 			for(var i=0;i<val[0].files.length;i++){
@@ -100,15 +131,23 @@ function initSaveBtn(){
 			}
 		});
 		
+		//获取申请ID
+		json.append("applyId",applyId);
+		
 		//提交后台
 		$.ajax({
 			url : $.cxt + "/apply/doApply",
 			data : json,
 			type : "POST",
 			dataType : "json",
+			cache:false,
 			contentType : false,
 			processData : false,
-			loading:true
+			loading:true,
+			success:function(){
+				//更新tip数
+				initTodoList();
+			}
 		});
 	});
 }

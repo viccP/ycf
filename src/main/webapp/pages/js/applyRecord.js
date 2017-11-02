@@ -87,7 +87,7 @@ function initGrid(applyId) {
 					{ name : 'applyUser', align : 'center',width:"10%", editable : false }, 
 					{ name : 'applyTitle', align : 'center',width:"10%",  editable : false },
 					{ name : 'status', align : 'center',  width:"10%",editable : false,formatter : encodeStatus}, 
-					{ name : 'applyTime', align : 'center',width:"20%", editable : false,formatter:"date",formatoptions: {srcformat:'u',newformat:'Y-m-d H:i:s'}},
+					{ name : 'applyTime', align : 'center',width:"20%", editable : false},
 					{ name : 'rejectMsg', align : 'center', width:"40%",align:"left",editable : false },
 					{ name : 'act', align : 'center', width:"10%",search : false, sortable : false, editable : false, formatter : renderOperation } 
 				], 

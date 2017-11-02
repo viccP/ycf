@@ -6,9 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class MainForm implements Serializable {
 
-	/** 生成的序列号 **/  
+	/** 生成的序列号 **/
 	private static final long serialVersionUID = 8968042052714753811L;
-	
+
+	// 申请ID
+	private String applyId;
+
 	// 基本信息
 	private String name;
 	private String sex;
@@ -1247,5 +1250,25 @@ public class MainForm implements Serializable {
 	 */
 	public void setSpouseJobTitle(String spouseJobTitle) {
 		this.spouseJobTitle = spouseJobTitle;
+	}
+
+	/** 
+	* applyId. 
+	* 
+	* @return  the applyId 
+	* @since   JDK 1.6 
+	*/
+	public String getApplyId() {
+		return applyId;
+	}
+
+	/** 
+	 * applyId. 
+	 * 
+	 * @param   applyId    the applyId to set 
+	 * @since   JDK 1.6 
+	 */
+	public void setApplyId(String applyId) {
+		this.applyId = applyId;
 	}
 }

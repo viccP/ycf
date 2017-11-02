@@ -83,6 +83,9 @@ public class ApplyAction {
 	public String apply(MainForm apply) {
 		try {
 
+			// 获取申请ID
+			String applyId = apply.getApplyId();
+
 			if (Session.isSuperAdmin()) {
 				return Ajax.responseString(CST.RES_AUTO_DIALOG, "管理员不能提交申请哦:)");
 			}
@@ -114,13 +117,21 @@ public class ApplyAction {
 
 			// 5.存入数据库
 			ApplyInfo object = new ApplyInfo();
-			object.setApplyId(IdGenerator.genId());
-			object.setApplyTitle("报件申请");
-			object.setApplyTime(new Timestamp(System.currentTimeMillis()));
 			object.setApplyUser(Session.getUser().getUserId());
-			object.setStatus(CST.APPLY_STATUS_WAITE);
 			object.setData(SerializUtil.java2Stream(apply));
-			applyInfoDao.insert(object);
+			object.setStatus(CST.APPLY_STATUS_WAITE);
+
+			if (StringUtils.isEmpty(applyId)) {
+				object.setApplyTitle("报件申请");
+				object.setApplyId(IdGenerator.genId());
+				object.setApplyTime(new Timestamp(System.currentTimeMillis()));
+				applyInfoDao.insert(object);
+			} else {
+				object.setApplyId(applyId);
+				object.setApplyTitle("报件申请(驳回后再次申请)");
+				object.setApplyTime(new Timestamp(System.currentTimeMillis()));
+				applyInfoDao.update(object);
+			}
 
 			// 6.返回前台
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, "提交成功");
@@ -223,64 +234,49 @@ public class ApplyAction {
 	@ResponseBody
 	public String getApplyRecords(@RequestBody TodoForm todoForm) {
 		try {
-
+			SelectConditionStep<?> sql = null;
 			// 身份认证
 			if (Session.isSuperAdmin()) {
-				
 				// 定义sql
-				SelectConditionStep<?> sql = dsl
+				sql = dsl
 						.select(APPLY_INFO.APPLY_ID,
 								DSL.field("date_format({0},'%Y-%m-%d %H:%i:%s')", String.class, APPLY_INFO.APPLY_TIME)
 										.as("applyTime"),
 								APPLY_INFO.APPLY_TITLE, TM_USER.USER_NAME.as("applyUser"),
 								DSL.val(Session.isSuperAdmin()).as("isAdmin"), APPLY_INFO.STATUS, APPLY_INFO.REJECT_MSG)
 						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER)).where("1=1");
-				
+
 				// 申请人是否为空
 				if (!StringUtils.isEmpty(todoForm.getApplyUser())) {
 					sql.and(TM_USER.USER_NAME.contains(todoForm.getApplyUser()));
 				}
-				
-				// 申请状态是否为空
-				if (todoForm.getStatus() != null) {
-					sql.and(APPLY_INFO.STATUS.contains(todoForm.getStatus()));
-				}
-
-				// 申请ID是否为空
-				if (!StringUtils.isEmpty(todoForm.getApplyId())) {
-					sql.and(APPLY_INFO.APPLY_ID.eq(todoForm.getApplyId()));
-				}
-
-				// 添加排序
-				sql.orderBy(TM_USER.UPD_TIME.asc());
-				Page<TodoForm> res = pageHelper.get(todoForm.getPage(), todoForm.getRows(), sql, TodoForm.class);
-				return Ajax.responseString(CST.RES_SUCCESS, res, true);
-			}
-			else {
+			} else {
 				// 定义sql
-				SelectConditionStep<?> sql = dsl
+				sql = dsl
 						.select(APPLY_INFO.APPLY_ID,
-								DSL.field("date_format({0},'%Y-%m-%d %H:%i:%s')", String.class, APPLY_INFO.APPLY_TIME).as("applyTime"),
+								DSL.field("date_format({0},'%Y-%m-%d %H:%i:%s')", String.class, APPLY_INFO.APPLY_TIME)
+										.as("applyTime"),
 								APPLY_INFO.APPLY_TITLE, TM_USER.USER_NAME.as("applyUser"),
 								DSL.val(Session.isSuperAdmin()).as("isAdmin"), APPLY_INFO.STATUS, APPLY_INFO.REJECT_MSG)
-						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER)).where(TM_USER.USER_ID.eq(Session.getUser().getUserId()));
-				
-				// 申请状态是否为空
-				if (todoForm.getStatus() != null) {
-					sql.and(APPLY_INFO.STATUS.contains(todoForm.getStatus()));
-				}
-
-				// 申请ID是否为空
-				if (!StringUtils.isEmpty(todoForm.getApplyId())) {
-					sql.and(APPLY_INFO.APPLY_ID.eq(todoForm.getApplyId()));
-				}
-
-				// 添加排序
-				sql.orderBy(TM_USER.UPD_TIME.asc());
-				Page<TodoForm> res = pageHelper.get(todoForm.getPage(), todoForm.getRows(), sql, TodoForm.class);
-				return Ajax.responseString(CST.RES_SUCCESS, res, true);
+						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER))
+						.where(TM_USER.USER_ID.eq(Session.getUser().getUserId()));
 			}
-	
+
+			// 申请状态是否为空
+			if (todoForm.getStatus() != null) {
+				sql.and(APPLY_INFO.STATUS.contains(todoForm.getStatus()));
+			}
+
+			// 申请ID是否为空
+			if (!StringUtils.isEmpty(todoForm.getApplyId())) {
+				sql.and(APPLY_INFO.APPLY_ID.eq(todoForm.getApplyId()));
+			}
+
+			// 添加排序
+			sql.orderBy(TM_USER.UPD_TIME.asc());
+			Page<TodoForm> res = pageHelper.get(todoForm.getPage(), todoForm.getRows(), sql, TodoForm.class);
+			return Ajax.responseString(CST.RES_SUCCESS, res, true);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
@@ -306,6 +302,28 @@ public class ApplyAction {
 					.where(APPLY_INFO.APPLY_ID.eq(todoForm.getApplyId())).execute();
 
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, "审批成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 * rebuild:(重构申请页面). <br/>
+	 * 
+	 * @author liboqiang
+	 * @param applyId
+	 * @return
+	 * @since JDK 1.6
+	 */
+	@RequestMapping(value = "/rebuild", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String rebuild(String applyId) {
+		try {
+			ApplyInfo bean = applyInfoDao.fetchOneByApplyId(applyId);
+			MainForm data = SerializUtil.stream2Java(bean.getData());
+			return Ajax.responseString(CST.RES_SUCCESS, data);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Ajax.responseString(CST.RES_AUTO_DIALOG, e.getMessage());
