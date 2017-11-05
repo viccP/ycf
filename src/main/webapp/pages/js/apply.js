@@ -4,7 +4,7 @@
 $(function(){
 	
 	//获取申请ID
-	var applyId=$("body").data("applyIdArgs");
+	var applyId=$("body").data("applyIdArgs")||"";
 	
 	if(applyId){
 		//提交后台
