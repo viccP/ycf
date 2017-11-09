@@ -2,7 +2,6 @@
  * 
  */
 $(function(){
-	
 	$('#loginForm').bootstrapValidator({
 		fields: {
 			loginId: {

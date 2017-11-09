@@ -11,6 +11,9 @@ public class MainForm implements Serializable {
 
 	// 申请ID
 	private String applyId;
+	
+	//产品类型信息
+	private String proType;
 
 	// 基本信息
 	private String name;
@@ -1270,5 +1273,25 @@ public class MainForm implements Serializable {
 	 */
 	public void setApplyId(String applyId) {
 		this.applyId = applyId;
+	}
+
+	/** 
+	* proType. 
+	* 
+	* @return  the proType 
+	* @since   JDK 1.6 
+	*/
+	public String getProType() {
+		return proType;
+	}
+
+	/** 
+	 * proType. 
+	 * 
+	 * @param   proType    the proType to set 
+	 * @since   JDK 1.6 
+	 */
+	public void setProType(String proType) {
+		this.proType = proType;
 	}
 }

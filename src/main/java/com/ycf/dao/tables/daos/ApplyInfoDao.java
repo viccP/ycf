@@ -66,10 +66,17 @@ public class ApplyInfoDao extends DAOImpl<ApplyInfoRecord, com.ycf.dao.tables.po
     }
 
     /**
-     * Fetch records that have <code>apply_title IN (values)</code>
+     * Fetch records that have <code>pro_type IN (values)</code>
      */
-    public List<com.ycf.dao.tables.pojos.ApplyInfo> fetchByApplyTitle(String... values) {
-        return fetch(ApplyInfo.APPLY_INFO.APPLY_TITLE, values);
+    public List<com.ycf.dao.tables.pojos.ApplyInfo> fetchByProType(String... values) {
+        return fetch(ApplyInfo.APPLY_INFO.PRO_TYPE, values);
+    }
+
+    /**
+     * Fetch records that have <code>apply_car IN (values)</code>
+     */
+    public List<com.ycf.dao.tables.pojos.ApplyInfo> fetchByApplyCar(String... values) {
+        return fetch(ApplyInfo.APPLY_INFO.APPLY_CAR, values);
     }
 
     /**
@@ -77,6 +84,13 @@ public class ApplyInfoDao extends DAOImpl<ApplyInfoRecord, com.ycf.dao.tables.po
      */
     public List<com.ycf.dao.tables.pojos.ApplyInfo> fetchByApplyUser(String... values) {
         return fetch(ApplyInfo.APPLY_INFO.APPLY_USER, values);
+    }
+
+    /**
+     * Fetch records that have <code>loan_val IN (values)</code>
+     */
+    public List<com.ycf.dao.tables.pojos.ApplyInfo> fetchByLoanVal(String... values) {
+        return fetch(ApplyInfo.APPLY_INFO.LOAN_VAL, values);
     }
 
     /**

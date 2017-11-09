@@ -89,39 +89,7 @@
 	<!-- /section:basics/navbar.layout -->
 	<div class="main-container" id="main-container">
 		<div id="sidebar" class="sidebar responsive menu-min">
-			<ul class="nav nav-list">
-				<li class="">
-					<a href="#" class="dropdown-toggle menu-anchor" path="<%=request.getContextPath()%>/pages/apply.jsp">
-						<i class="menu-icon fa fa-sitemap"></i>
-						<span class="menu-text"> 信息录入 </span>
-					</a>
-				</li>
-				<li class="">
-					<a href="#" class="dropdown-toggle">
-						<i class="menu-icon fa fa-cogs"></i>
-						<span class="menu-text"> 系统管理 </span>
-						<b class="arrow fa fa-angle-down"></b>
-					</a>
-					<b class="arrow"></b>
-					<ul class="submenu">
-						<li class="">
-							<a href="#" path="<%=request.getContextPath()%>/pages/user.jsp" class="menu-anchor">
-								<i class="menu-icon fa fa-caret-right"></i>
-								用户管理
-							</a>
-							<b class="arrow"></b>
-						</li>
-
-						<li class="">
-							<a href="jqgrid.html">
-								<i class="menu-icon fa fa-caret-right"></i>
-								历史记录
-							</a>
-							<b class="arrow"></b>
-						</li>
-					</ul>
-				</li>
-			</ul>
+			<ul class="nav nav-list" id="menuCtn"></ul>
 			<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
 				<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
 			</div>

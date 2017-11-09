@@ -3,6 +3,9 @@
  */
 $(function() {
 
+	//清除页面数据
+	cleanBodyData();
+	
 	// 初始化用户下拉菜单
 	$('.fix-select').chosen({
 		disable_search : true,

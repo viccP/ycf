@@ -501,18 +501,6 @@
 							<div class="widget-main">
 								<div class="profile-user-info profile-user-info-striped">
 									<div class="profile-info-row">
-										<div class="profile-info-name">汽车经销商</div>
-										<div class="profile-info-value">
-											<span>延边友车汽车销售有限公司 </span>
-										</div>
-									</div>
-									<div class="profile-info-row">
-										<div class="profile-info-name">销售员姓名</div>
-										<div class="profile-info-value">
-											<span>于洋</span>
-										</div>
-									</div>
-									<div class="profile-info-row">
 										<div class="profile-info-name">车型</div>
 										<div class="profile-info-value">
 											<input class="input-large" placeholder="请输入车型" type="text" name="carType">

@@ -3,6 +3,54 @@
  */
 $(function() {
 
+	//清除页面数据
+	cleanBodyData();
+	
+	//根据权限重置菜单
+	$("#menuCtn").empty();
+	$.ajax({
+		url : $.cxt + '/index/isAdmin',
+		type : "POST",
+		dataType:"json",
+		async:false,
+		success : function(json) {
+			if(json.data){
+				$("#menuCtn")
+				.append(
+					$("<li></li>").append(
+						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/user.jsp"})
+						.append($("<i></i>").addClass("menu-icon fa fa-user"))
+						.append($("<span></span>").addClass("menu-text").append("用户管理"))
+					)
+				)
+				.append(
+					$("<li></li>").append(
+						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/applyRecord.jsp"})
+						.append($("<i></i>").addClass("menu-icon fa fa-history"))
+						.append($("<span></span>").addClass("menu-text").append("申请记录"))
+					)
+				)
+			}
+			else{
+				$("#menuCtn")
+				.append(
+					$("<li></li>").append(
+						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/product.jsp"})
+						.append($("<i></i>").addClass("menu-icon fa fa-sitemap"))
+						.append($("<span></span>").addClass("menu-text").append("产品目录"))
+					)
+				)
+				.append(
+					$("<li></li>").append(
+						$("<a></a>").addClass("dropdown-toggle menu-anchor").attr({"href":"#","path":$.cxt+"/pages/applyRecord.jsp"})
+						.append($("<i></i>").addClass("menu-icon fa fa-history"))
+						.append($("<span></span>").addClass("menu-text").append("申请记录"))
+					)
+				)
+			}
+		}
+	});
+	
 	$('#selfSex').chosen({
 		disable_search : true,
 		width : "100%"
@@ -13,10 +61,9 @@ $(function() {
 
 		//清空容器
 		$("#pageContent").empty();
-
+		cleanBodyData();
 		//加载页面
 		$.get($(this).attr("path"), function(data) {
-			$("body").data("applyIdArgs","");
 			$("#pageContent").html(data);//初始化加载界面  
 		});
 	});
@@ -26,7 +73,6 @@ $(function() {
 	$("#viewAll").on("click",function(){
 		//加载页面
 		$.get($.cxt+"/pages/applyRecord.jsp", function(data) {
-			$("body").data("applyIdArgs","");
 			$("#pageContent").html(data);//初始化加载界面  
 		});
 	});
@@ -282,7 +328,7 @@ function initTodoList(){
 					$("<a></a>").attr({"href":"#","applyId":val.applyId}).addClass("clearfix").append(
 						$("<span></span>").addClass("msg-body")
 						.append(
-							$("<span></span>").addClass("msg-title").append($("<span></span>").addClass("blue").append(val.applyUser+":")).append(val.applyTitle)
+							$("<span></span>").addClass("msg-title").append($("<span></span>").addClass("blue").append(val.applyUser+":")).append(val.proType)
 						)
 						.append(
 							$("<span></span>").addClass("msg-time")
@@ -301,4 +347,13 @@ function initTodoList(){
 			});
 		}
 	});
+}
+
+/**
+ * 清楚页面数据
+ * @returns
+ */
+function cleanBodyData(){
+	$("body").data("applyIdArgs","");
+	$("body").data("applyPro","");
 }

@@ -2,11 +2,13 @@ package com.ycf.bean;
 
 public class TodoForm {
 	private String applyId;
-	private String applyTitle;
+	private String proType;
+	private String applyCar;
 	private String applyUser;
 	private String applyTime;
 	private Integer status;
 	private String rejectMsg;
+	private String loanVal;
 	private boolean isAdmin;
 	private int page;
 	private int rows;
@@ -30,27 +32,6 @@ public class TodoForm {
 	 */
 	public void setApplyId(String applyId) {
 		this.applyId = applyId;
-	}
-
-	/**
-	 * applyTitle.
-	 * 
-	 * @return the applyTitle
-	 * @since JDK 1.6
-	 */
-	public String getApplyTitle() {
-		return applyTitle;
-	}
-
-	/**
-	 * applyTitle.
-	 * 
-	 * @param applyTitle
-	 *            the applyTitle to set
-	 * @since JDK 1.6
-	 */
-	public void setApplyTitle(String applyTitle) {
-		this.applyTitle = applyTitle;
 	}
 
 	/**
@@ -194,5 +175,65 @@ public class TodoForm {
 	 */
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	/** 
+	* proType. 
+	* 
+	* @return  the proType 
+	* @since   JDK 1.6 
+	*/
+	public String getProType() {
+		return proType;
+	}
+
+	/** 
+	 * proType. 
+	 * 
+	 * @param   proType    the proType to set 
+	 * @since   JDK 1.6 
+	 */
+	public void setProType(String proType) {
+		this.proType = proType;
+	}
+
+	/** 
+	* applyCar. 
+	* 
+	* @return  the applyCar 
+	* @since   JDK 1.6 
+	*/
+	public String getApplyCar() {
+		return applyCar;
+	}
+
+	/** 
+	 * applyCar. 
+	 * 
+	 * @param   applyCar    the applyCar to set 
+	 * @since   JDK 1.6 
+	 */
+	public void setApplyCar(String applyCar) {
+		this.applyCar = applyCar;
+	}
+
+	/** 
+	* loanVal. 
+	* 
+	* @return  the loanVal 
+	* @since   JDK 1.6 
+	*/
+	public String getLoanVal() {
+		return loanVal;
+	}
+
+	/** 
+	 * loanVal. 
+	 * 
+	 * @param   loanVal    the loanVal to set 
+	 * @since   JDK 1.6 
+	 */
+	public void setLoanVal(String loanVal) {
+		this.loanVal = loanVal;
 	}
 }

@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ApplyInfo extends TableImpl<ApplyInfoRecord> {
 
-    private static final long serialVersionUID = -1631132849;
+    private static final long serialVersionUID = -1322758479;
 
     /**
      * The reference instance of <code>system.apply_info</code>
@@ -56,14 +56,24 @@ public class ApplyInfo extends TableImpl<ApplyInfoRecord> {
     public final TableField<ApplyInfoRecord, String> APPLY_ID = createField("apply_id", org.jooq.impl.SQLDataType.VARCHAR.length(32).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "申请ID");
 
     /**
-     * The column <code>system.apply_info.apply_title</code>. 申请标题
+     * The column <code>system.apply_info.pro_type</code>. 产品类型
      */
-    public final TableField<ApplyInfoRecord, String> APPLY_TITLE = createField("apply_title", org.jooq.impl.SQLDataType.VARCHAR.length(200), this, "申请标题");
+    public final TableField<ApplyInfoRecord, String> PRO_TYPE = createField("pro_type", org.jooq.impl.SQLDataType.VARCHAR.length(200), this, "产品类型");
+
+    /**
+     * The column <code>system.apply_info.apply_car</code>. 申请车型
+     */
+    public final TableField<ApplyInfoRecord, String> APPLY_CAR = createField("apply_car", org.jooq.impl.SQLDataType.VARCHAR.length(200), this, "申请车型");
 
     /**
      * The column <code>system.apply_info.apply_user</code>. 申请人
      */
     public final TableField<ApplyInfoRecord, String> APPLY_USER = createField("apply_user", org.jooq.impl.SQLDataType.VARCHAR.length(50), this, "申请人");
+
+    /**
+     * The column <code>system.apply_info.loan_val</code>. 贷款金额
+     */
+    public final TableField<ApplyInfoRecord, String> LOAN_VAL = createField("loan_val", org.jooq.impl.SQLDataType.VARCHAR.length(200), this, "贷款金额");
 
     /**
      * The column <code>system.apply_info.apply_time</code>. 申请时间

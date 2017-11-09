@@ -42,13 +42,12 @@ public class IndexAction {
 	@Autowired
 	private DefaultDSLContext dsl;
 
-
 	/**
 	 * 
-	 * isAdmin:(是否管理员). <br/> 
+	 * isAdmin:(是否管理员). <br/>
 	 * 
 	 * @author liboqiang
-	 * @return 
+	 * @return
 	 * @since JDK 1.6
 	 */
 	@RequestMapping(value = "/isAdmin", method = RequestMethod.POST, produces = "text/html;charset=utf-8")
@@ -217,7 +216,7 @@ public class IndexAction {
 						.select(APPLY_INFO.APPLY_ID,
 								DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, APPLY_INFO.APPLY_TIME)
 										.as("applyTime"),
-								APPLY_INFO.APPLY_TITLE, TM_USER.USER_NAME.as("applyUser"))
+								APPLY_INFO.APPLY_CAR, APPLY_INFO.PRO_TYPE, TM_USER.USER_NAME.as("applyUser"))
 						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER))
 						.where(APPLY_INFO.STATUS.eq(CST.APPLY_STATUS_WAITE)).orderBy(APPLY_INFO.APPLY_TIME).limit(5)
 						.fetchInto(TodoForm.class);
@@ -225,7 +224,7 @@ public class IndexAction {
 				// 添加自定义信息
 				reslst.stream().map(apply -> {
 					apply.setApplyTime(resetTime(apply.getApplyTime()));
-					apply.setApplyTitle("发起了报件申请");
+					apply.setProType("发起了报件申请");
 					return apply;
 				}).collect(Collectors.toList());
 
@@ -233,11 +232,10 @@ public class IndexAction {
 			} else {
 				List<TodoForm> reslst = dsl
 						.select(APPLY_INFO.APPLY_ID,
-								DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, APPLY_INFO.APPLY_TIME).as("applyTime"),
-								APPLY_INFO.APPLY_TITLE, 
-								TM_USER.USER_NAME.as("applyUser"),
-								APPLY_INFO.STATUS
-						)
+								DSL.field("date_format({0},'%Y%m%d%H%i%s')", String.class, APPLY_INFO.APPLY_TIME)
+										.as("applyTime"),
+								APPLY_INFO.APPLY_CAR, APPLY_INFO.PRO_TYPE, TM_USER.USER_NAME.as("applyUser"),
+								APPLY_INFO.STATUS)
 						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER))
 						.where(APPLY_INFO.STATUS.notEqual(CST.APPLY_STATUS_FINISH))
 						.and(APPLY_INFO.APPLY_USER.eq(Session.getUser().getUserId())).orderBy(APPLY_INFO.APPLY_TIME)
@@ -246,10 +244,10 @@ public class IndexAction {
 				reslst.stream().map(apply -> {
 					apply.setApplyTime(resetTime(apply.getApplyTime()));
 					apply.setApplyUser("我");
-					if (CST.APPLY_STATUS_REJECTED==apply.getStatus()) {
-						apply.setApplyTitle("报件申请被驳回");
+					if (CST.APPLY_STATUS_REJECTED == apply.getStatus()) {
+						apply.setProType("报件申请被驳回");
 					} else {
-						apply.setApplyTitle("报件申请等待管理员审批中");
+						apply.setProType("报件申请等待管理员审批中");
 					}
 					return apply;
 				}).collect(Collectors.toList());

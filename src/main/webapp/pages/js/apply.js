@@ -28,8 +28,10 @@ $(function(){
 					
 					//输入框
 					$("span.percent[name="+key+"]").text(value);
-					
 				});
+				
+				//产品信息
+				$("body").data("applyPro",json.data.proType);
 			}
 		});
 	}
@@ -123,7 +125,7 @@ function initSaveBtn(applyId){
 			json.append($(this).attr("name"),$(this).text());
 			
 		});
-		debugger
+
 		//获取上传文件
 		$.each($("body").data("uploads")||{},function(key,val){
 			for(var i=0;i<val[0].files.length;i++){
@@ -132,7 +134,12 @@ function initSaveBtn(applyId){
 		});
 		
 		//获取申请ID
+		debugger
 		json.append("applyId",applyId);
+		
+		//获取产品信息
+		var applyPro=$("body").data("applyPro")||"";
+		json.append("proType",applyPro);
 		
 		//提交后台
 		$.ajax({

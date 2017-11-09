@@ -120,15 +120,17 @@ public class ApplyAction {
 			object.setApplyUser(Session.getUser().getUserId());
 			object.setData(SerializUtil.java2Stream(apply));
 			object.setStatus(CST.APPLY_STATUS_WAITE);
+			object.setApplyCar(apply.getCarType());
+			object.setLoanVal(apply.getLoanVal());
 
 			if (StringUtils.isEmpty(applyId)) {
-				object.setApplyTitle("报件申请");
+				object.setProType(apply.getProType());
 				object.setApplyId(IdGenerator.genId());
 				object.setApplyTime(new Timestamp(System.currentTimeMillis()));
 				applyInfoDao.insert(object);
 			} else {
 				object.setApplyId(applyId);
-				object.setApplyTitle("报件申请(驳回后再次申请)");
+				object.setProType(apply.getProType() + "(驳回后再次申请)");
 				object.setApplyTime(new Timestamp(System.currentTimeMillis()));
 				applyInfoDao.update(object);
 			}
@@ -242,8 +244,9 @@ public class ApplyAction {
 						.select(APPLY_INFO.APPLY_ID,
 								DSL.field("date_format({0},'%Y-%m-%d %H:%i:%s')", String.class, APPLY_INFO.APPLY_TIME)
 										.as("applyTime"),
-								APPLY_INFO.APPLY_TITLE, TM_USER.USER_NAME.as("applyUser"),
-								DSL.val(Session.isSuperAdmin()).as("isAdmin"), APPLY_INFO.STATUS, APPLY_INFO.REJECT_MSG)
+								APPLY_INFO.LOAN_VAL, APPLY_INFO.APPLY_CAR, APPLY_INFO.PRO_TYPE,
+								TM_USER.USER_NAME.as("applyUser"), DSL.val(Session.isSuperAdmin()).as("isAdmin"),
+								APPLY_INFO.STATUS, APPLY_INFO.REJECT_MSG)
 						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER)).where("1=1");
 
 				// 申请人是否为空
@@ -256,8 +259,9 @@ public class ApplyAction {
 						.select(APPLY_INFO.APPLY_ID,
 								DSL.field("date_format({0},'%Y-%m-%d %H:%i:%s')", String.class, APPLY_INFO.APPLY_TIME)
 										.as("applyTime"),
-								APPLY_INFO.APPLY_TITLE, TM_USER.USER_NAME.as("applyUser"),
-								DSL.val(Session.isSuperAdmin()).as("isAdmin"), APPLY_INFO.STATUS, APPLY_INFO.REJECT_MSG)
+								APPLY_INFO.LOAN_VAL, APPLY_INFO.APPLY_CAR, APPLY_INFO.PRO_TYPE,
+								TM_USER.USER_NAME.as("applyUser"), DSL.val(Session.isSuperAdmin()).as("isAdmin"),
+								APPLY_INFO.STATUS, APPLY_INFO.REJECT_MSG)
 						.from(APPLY_INFO).leftJoin(TM_USER).on(TM_USER.USER_ID.eq(APPLY_INFO.APPLY_USER))
 						.where(TM_USER.USER_ID.eq(Session.getUser().getUserId()));
 			}

@@ -23,11 +23,13 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ApplyInfo implements Serializable {
 
-    private static final long serialVersionUID = 1242417047;
+    private static final long serialVersionUID = -251805661;
 
     private String    applyId;
-    private String    applyTitle;
+    private String    proType;
+    private String    applyCar;
     private String    applyUser;
+    private String    loanVal;
     private Timestamp applyTime;
     private Integer   status;
     private String    rejectMsg;
@@ -37,8 +39,10 @@ public class ApplyInfo implements Serializable {
 
     public ApplyInfo(ApplyInfo value) {
         this.applyId = value.applyId;
-        this.applyTitle = value.applyTitle;
+        this.proType = value.proType;
+        this.applyCar = value.applyCar;
         this.applyUser = value.applyUser;
+        this.loanVal = value.loanVal;
         this.applyTime = value.applyTime;
         this.status = value.status;
         this.rejectMsg = value.rejectMsg;
@@ -47,16 +51,20 @@ public class ApplyInfo implements Serializable {
 
     public ApplyInfo(
         String    applyId,
-        String    applyTitle,
+        String    proType,
+        String    applyCar,
         String    applyUser,
+        String    loanVal,
         Timestamp applyTime,
         Integer   status,
         String    rejectMsg,
         byte[]    data
     ) {
         this.applyId = applyId;
-        this.applyTitle = applyTitle;
+        this.proType = proType;
+        this.applyCar = applyCar;
         this.applyUser = applyUser;
+        this.loanVal = loanVal;
         this.applyTime = applyTime;
         this.status = status;
         this.rejectMsg = rejectMsg;
@@ -71,12 +79,20 @@ public class ApplyInfo implements Serializable {
         this.applyId = applyId;
     }
 
-    public String getApplyTitle() {
-        return this.applyTitle;
+    public String getProType() {
+        return this.proType;
     }
 
-    public void setApplyTitle(String applyTitle) {
-        this.applyTitle = applyTitle;
+    public void setProType(String proType) {
+        this.proType = proType;
+    }
+
+    public String getApplyCar() {
+        return this.applyCar;
+    }
+
+    public void setApplyCar(String applyCar) {
+        this.applyCar = applyCar;
     }
 
     public String getApplyUser() {
@@ -85,6 +101,14 @@ public class ApplyInfo implements Serializable {
 
     public void setApplyUser(String applyUser) {
         this.applyUser = applyUser;
+    }
+
+    public String getLoanVal() {
+        return this.loanVal;
+    }
+
+    public void setLoanVal(String loanVal) {
+        this.loanVal = loanVal;
     }
 
     public Timestamp getApplyTime() {
@@ -124,8 +148,10 @@ public class ApplyInfo implements Serializable {
         StringBuilder sb = new StringBuilder("ApplyInfo (");
 
         sb.append(applyId);
-        sb.append(", ").append(applyTitle);
+        sb.append(", ").append(proType);
+        sb.append(", ").append(applyCar);
         sb.append(", ").append(applyUser);
+        sb.append(", ").append(loanVal);
         sb.append(", ").append(applyTime);
         sb.append(", ").append(status);
         sb.append(", ").append(rejectMsg);

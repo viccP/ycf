@@ -4,7 +4,7 @@
 $(function() {
 
 	//获取URL参数
-	var applyId=$("body").data("applyIdArgs");
+	var applyId=$("body").data("applyIdArgs")||"";
 	
 	// 初始化用户下拉菜单
 	$('.fix-select').chosen({
@@ -81,14 +81,16 @@ function initGrid(applyId) {
 		height : 370,
 		// autowidth : true,
 		width : $(".page-content").width() - 20,
-		colNames : [ '申请ID', '申请人', '内容', '申请状态', '申请时间','审批意见', '操作' ],
+		colNames : [ '申请ID', '申请人', '产品',"车型", '申请金额','申请状态', '申请时间','审批意见', '操作' ],
 		colModel : [ 
 					{ name : 'applyId', align : 'center',  editable : false, hidden : true }, 
-					{ name : 'applyUser', align : 'center',width:"10%", editable : false }, 
-					{ name : 'applyTitle', align : 'center',width:"10%",  editable : false },
+					{ name : 'applyUser', align : 'center',width:"5%", editable : false }, 
+					{ name : 'proType', align : 'center',width:"15%",  editable : false },
+					{ name : 'applyCar', align : 'center',width:"20%",  editable : false },
+					{ name : 'loanVal', align : 'center',width:"10%",  editable : false },
 					{ name : 'status', align : 'center',  width:"10%",editable : false,formatter : encodeStatus}, 
 					{ name : 'applyTime', align : 'center',width:"20%", editable : false},
-					{ name : 'rejectMsg', align : 'center', width:"40%",align:"left",editable : false },
+					{ name : 'rejectMsg', align : 'center', width:"20%",align:"left",editable : false },
 					{ name : 'act', align : 'center', width:"10%",search : false, sortable : false, editable : false, formatter : renderOperation } 
 				], 
 		viewrecords : true, 
