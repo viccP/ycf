@@ -388,7 +388,7 @@
 										</div>
 
 										<div class="space-2"></div>
-										<span>每期还款额</span>
+										<span>月供</span>
 									</div>
 								</div>
 
