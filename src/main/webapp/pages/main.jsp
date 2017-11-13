@@ -55,7 +55,7 @@
 					<li>
 						<a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
 							<i class="ace-icon fa fa-bell"></i>
-							<span class="badge badge-danger" id="tipNum"></span>
+							<span class="badge badge-success" id="tipNum"></span>
 						</a>
 						<ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
 							<li class="dropdown-header" id="titleNum"></li>
