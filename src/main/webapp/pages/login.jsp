@@ -42,7 +42,7 @@
 							<h1>
 								<i class="ace-icon fa fa-leaf green"></i>
 								<span class="red">友车</span>
-								<span class="white" id="id-text2">OA</span>
+								<span class="white" id="id-text2">金融</span>
 							</h1>
 						</div>
 
